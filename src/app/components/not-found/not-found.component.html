@@ -1,0 +1,10 @@
+
+  <div class="image">
+    <img *ngIf="message != '404'" src="assets/images/access-denied.svg" />
+   <img *ngIf="message == '404'" src="assets/images/page-not-found.svg" />
+
+    <p>{{ message }}</p>
+   
+  </div>
+
+

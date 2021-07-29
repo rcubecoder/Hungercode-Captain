@@ -1,0 +1,16 @@
+
+.tabe-wrapper{
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.table{
+    min-height: 100px;
+    min-width: 80px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

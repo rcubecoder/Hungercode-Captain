@@ -1,0 +1,213 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-searchbar
+      inputmode="text"
+      placeholder="Search For Food"
+      (ionChange)="searchForFood($event)"
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="tempMenuCards.length == 0">
+   <div class="image">
+       <img src="assets/images/search.svg"/>
+
+   </div>
+</ion-content>
+<ion-content *ngIf="tempMenuCards.length > 0">
+  <ion-grid>
+    <ion-row style="display: flex; justify-content: start">
+      <ion-col
+        *ngFor="let menu of tempMenuCards; let i = index"
+        size-xs="6"
+        size-sm="5"
+        size-md="4"
+        size-lg="3"
+      >
+        <ion-card
+          style="padding: 0px"
+          [ngStyle]="{ 'background-image': 'url('+drive_url+menu.img_url+')' }"
+        >
+          <ion-card-header
+            style="
+              background-image: linear-gradient(
+                rgba(0, 0, 0, 1),
+                rgba(255, 0, 0, 0)
+              );
+            "
+            class="ion-no-padding"
+          >
+            <ion-card-title style="padding: 10px">
+              <ion-row
+                style="
+                  font-size: max(12px, min(2vw, 2vh));
+                  display: flex;
+                  align-items: flex-start;
+                  flex-wrap: nowrap;
+                "
+              >
+                <span
+                  *ngIf="menu.veg"
+                  style="
+                    min-width: 14px !important;
+                    min-height: 14px !important;
+                    width: 14px;
+                    height: 14px;
+                    border: 1px solid green;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 5px;
+                  "
+                >
+                  <span
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background-color: green;
+                    "
+                  ></span>
+                </span>
+                <span
+                  *ngIf="!menu.veg"
+                  style="
+                    min-width: 14px !important;
+                    min-height: 14px !important;
+                    width: 14px;
+                    height: 14px;
+                    border: 1px solid red;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-right: 5px;
+                  "
+                >
+                  <span
+                    style="
+                      width: 8px;
+                      height: 8px;
+                      border-radius: 50%;
+                      background-color: red;
+                    "
+                  ></span>
+                </span>
+                <span style="flex-grow: 8; color: white">{{ menu.name }}</span>
+                <span
+                  *ngIf="menu.disPrice"
+                  style="display: flex; flex-direction: column; flex-wrap: wrap"
+                >
+                  <span style="float: right; color: white"
+                    >{{ menu.disPrice | currency: "&#8377;" }}</span
+                  >
+                  <span
+                    style="
+                      padding-right: 5px;
+                      float: right;
+                      color: crimson;
+                      text-decoration: line-through !important;
+                      font-weight: bolder;
+                    "
+                    >{{ menu.price | currency: "&#8377;" }}</span
+                  >
+                </span>
+
+                <span *ngIf="!menu.disPrice" style="float: right; color: white"
+                  >{{ menu.price | currency: "&#8377;" }}</span
+                >
+              </ion-row>
+              <div *ngIf="menu.people" class="people" style="color: white">
+                <ion-icon name="people-outline" style="margin-right: 2px">
+                </ion-icon>
+                {{ menu.people }}
+              </div>
+            </ion-card-title>
+          </ion-card-header>
+
+          <div class="footer-div">
+            <div *ngIf="menu.customize != -1; else unavailable">
+              <ion-button
+                class="add-button"
+                *ngIf="menu.customize == 0; else customize"
+                fill="solid"
+                color="light"
+                style="--margin-start: 0; --margin-end: 0"
+                (click)="openOptions(menu, i, 'add')"
+                >ADD
+              </ion-button>
+            </div>
+          </div>
+          <ng-template #customize>
+            <div
+              *ngIf="
+                menu.addon?.length != 0 || menu.variant?.length != 0  
+                else add
+              "
+              style="
+                display: flex;
+                align-items: center;
+                width: 100%;
+                background-color: var(--ion-color-light);
+              "
+            >
+              <ion-button
+                fill="solid"
+                color="light"
+                style="--margin-start: 0; --margin-end: 0; width: 80%"
+                (click)="openOptions(menu, i, 'customize')"
+                class="add-button"
+                >CUSTOMIZE</ion-button
+              >
+              <ion-icon
+                (click)="removeOrderItem(menu.id,menu.category, i)"
+                color="danger"
+                style="width: 20%"
+                name="trash-outline"
+              >
+              </ion-icon>
+            </div>
+            <ng-template #add>
+              <ion-row
+                style="
+                  height: 30px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  background-color: var(--ion-color-light);
+                "
+              >
+                <ion-icon
+                  name="remove-outline"
+                  (click)="decrease(menu.id,menu.price,i)"
+                  style="margin: 4px 7px; flex-grow: 1"
+                ></ion-icon
+                ><span
+                  style="margin: 4px 10px; flex-grow: 8; text-align: center"
+                  >{{ menu.customize }}</span
+                >
+                <ion-icon
+                  name="add-outline"
+                  (click)="increase(menu.id,menu.price,i)"
+                  style="margin: 4px 7px; flex-grow: 1"
+                ></ion-icon>
+              </ion-row>
+            </ng-template>
+          </ng-template>
+          <ng-template #unavailable>
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                width: 100%;
+                background-color: red;
+              "
+            >
+              <ion-text style="color: #fff">Not Available</ion-text>
+            </div>
+          </ng-template>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

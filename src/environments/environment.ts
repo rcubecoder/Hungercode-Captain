@@ -1,16 +1,17 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
-
 export const environment = {
-  production: false
-};
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+  production: false,
+ API: { url: 'http://localhost:5000/api/captain/' },
+ // url: 'http://192.168.0.106:5000/api/user/'},
+ //API: { url: 'https://firestep-node.herokuapp.com/api/user/' },
+  firebaseConfig: {
+    apiKey: "AIzaSyBuDqvaSo06ctJVFpn-AG9gHow4HdxyAlQ",
+    authDomain: "peraket-rms.firebaseapp.com",
+    projectId: "peraket-rms",
+    storageBucket: "peraket-rms.appspot.com",
+    messagingSenderId: "122401619157",
+    appId: "1:122401619157:web:e99258dce12873fd27765c",
+    measurementId: "G-2J5TEVD94B"
+  },
+  token_secret: 'THIs Is my SeCrEt',
+  enc_secret: 'gstf78ijagf9hf09',
+}

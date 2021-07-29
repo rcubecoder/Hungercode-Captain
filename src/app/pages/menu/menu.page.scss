@@ -1,0 +1,69 @@
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}
+ion-button {
+  --ripple-color: white;
+  --box-shadow: none;
+}
+ion-badge {
+  font-size: 12px;
+}
+ion-title {
+  padding-left: 16px;
+  height: 20px;
+  font-size: max(16px, min(4vw, 4vh));
+}
+ion-label {
+  font-size:max(14px, min(3vw, 3vh)) ;
+}
+ion-card-title {
+  color: #353535;
+  font-size: max(16px, min(4vw, 4vh));
+}
+ion-item {
+  --inner-padding-end: 0;
+}
+ion-card {
+  margin: 0;
+  padding: 10px;
+  min-height: 160px;
+  background: #ffedcd;
+  background-size: cover;
+ // box-shadow: inset 1px 1px 5px var(--ion-color-light);
+  border-radius: 10px;
+  background-size: cover;
+}
+
+// custom //
+
+.button {
+  height: 20px;
+}
+.footer-div {
+  position: absolute;
+  bottom: 0;
+  margin: 0;
+  width: 100%;
+  //transform: translateX(-10px);
+}
+.add-button {
+  --border-radius: none;
+  color: var(--ion-color-dark) !important;
+  width: 100%;
+  min-height: 30px;
+  margin: 0;
+}
+.people {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.title-row{
+  font-size: max(14px, min(3vw, 3vh));
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}

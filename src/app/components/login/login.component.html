@@ -1,0 +1,98 @@
+<!-- <ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start" routerLink="/profile"
+      ><ion-button class="back-button"
+        ><ion-icon name="arrow-back-outline"></ion-icon></ion-button
+    ></ion-buttons>
+  </ion-toolbar>
+</ion-header> -->
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="default"
+  color="var(--ion-color-primary)"
+  type="line-spin-clockwise-fade"
+  [fullScreen]="true"
+></ngx-spinner>
+<ion-content>
+  <ion-grid style="padding-top: 20px">
+    <ion-row class="ion-justify-content-center">
+      <ion-col size-md="4" class="logo-theme">
+        <div class="logo-main">
+          <p style="font-size: 20px; margin: 0">
+            <img
+              width="100px"
+              src="https://drive.google.com/thumbnail?id=1ioUBhy_R6D3rrRjplj2OXIJKY9cfqGOP"
+            />
+          </p>
+        </div>
+      </ion-col>
+    </ion-row>
+<!--     <ion-row class="ion-justify-content-center">
+      <ion-col size-md="4">
+        <div class="sign-in">Sign-In To Order</div>
+      </ion-col>
+    </ion-row> -->
+
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="11" size-md="4">
+          <ion-input
+            type="email"
+            ngModel
+            name="email"
+            placeholder="Email or Contact Number"
+            required
+            pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+            #email="ngModel"
+            [ngStyle]="{'border': f.submitted && email.invalid ? '1px solid red' : 'none' }"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="11" size-md="4">
+          <ion-input
+            [type]="hideEyeIcon ? 'password' : 'text'"
+            placeholder="Password"
+            class="pass-input"
+            ngModel
+            name="pass"
+            required
+            minlength="8"
+            #pass="ngModel"
+            [ngStyle]="{'border': f.submitted && pass.invalid ? '1px solid red' : 'none' }"
+            ><ion-button fill="clear" (click)="changeType()" class="eye-button"
+              ><ion-icon
+                [name]="hideEyeIcon ? 'eye' : 'eye-off'"
+                slot="icon-only"
+                size="medium"
+              ></ion-icon></ion-button
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-justify-content-center">
+        <ion-col size="11" size-md="4">
+          <ion-item lines="none" class="ion-no-padding">
+            <ion-button
+              [disabled]="!f.valid"
+              shape="round"
+              type="submit"
+              color="primary"
+              slot="end"
+              >Sign-In</ion-button
+            >
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </form>
+
+    <ion-row class="forget-container ion-justify-content-center">
+      <ion-col size="11" size-md="4">
+        <a routerLink="/forgot-password" class="forget-text">Forgot Password?</a>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
+

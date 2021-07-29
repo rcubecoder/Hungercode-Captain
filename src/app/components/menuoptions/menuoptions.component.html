@@ -1,0 +1,87 @@
+<ion-header style="text-align: center;" class="ion-no-border">
+  <ion-button
+    class="ion-no-padding close-modal"
+    fill="clear"
+    (click)="closeOptions()"
+    ><ion-icon color="dark" name="chevron-down-outline"></ion-icon
+  ></ion-button>
+</ion-header>
+
+<ion-content style="height: 90%;">
+  <div class="modal-header">
+    {{ modalOptions.name }}
+    <span style="float: right;">{{ totalPrice | currency: "&#8377;" }}</span>
+  </div>
+  <ion-slides
+    [options]="sliderConfig"
+    #ionslide
+    class="ion-no-padding"
+    style="height: 80%; padding: 6% 12%;"
+  >
+    <ion-slide
+      *ngFor="let item of list; let i = index"
+      [id]="'slide' + i"
+      class="slide-box-add"
+    >
+      <div class="single-options-card">
+        <div style="text-align: right; padding: 8px;">
+          <span
+            (click)="removeItem(i)"
+            style="color: red; font-size: 16px; margin-right: 8px;"
+            >Remove</span
+          >
+        </div>
+      <div class="food-type" *ngIf="modalOptions.variant != undefined">
+          <ion-radio-group [id]="'radio' + i">
+            <ion-row
+              *ngFor="let variant of modalOptions.variant"
+              class="ion-no-padding radio-food-type"
+            >
+              <ion-radio
+                (click)="changeVariant(variant, i)"
+                [value]="variant.name"
+              ></ion-radio>
+              <ion-label>{{ variant.name }}</ion-label>
+              <span style="flex-grow: 6; text-align: right;">{{
+                variant.price | currency: "&#8377;"
+              }}</span>
+            </ion-row>
+          </ion-radio-group>
+        </div> 
+        <div style="padding: 20px 20px;">
+          <div
+            *ngFor="let addon of modalOptions.addon; let in = index"
+            class="addon-checkbox-container"
+          >
+            <ion-checkbox
+              color="primary"
+              (click)="addAddon(i, addon.price, addon.name, $event)"
+              style="margin-right: 5px;"
+              [id]="'addon' + i + '_' + in"
+              checked="false"
+            ></ion-checkbox>
+            <ion-label>{{ addon.name }}</ion-label>
+            <span style="flex-grow: 6; text-align: right;">{{
+              addon.price | currency: "&#8377;"
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </ion-slide>
+  </ion-slides>
+  <div class="increase-quantity">
+    <span
+      (click)="removeAllItem()"
+      style="flex-grow: 3; text-align: left; margin-left: 10px; color: red;"
+      >Remove all</span
+    >
+    <span style="text-align: center; flex-grow: 3;">
+      {{ totalItem }}
+    </span>
+    <span
+      (click)="addNewItem()"
+      style="flex-grow: 3; text-align: right; margin-right: 10px;"
+      >Add +
+    </span>
+  </div>
+</ion-content>

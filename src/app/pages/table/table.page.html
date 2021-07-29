@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>table</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <div class="tabe-wrapper">
+      <div
+        class="table"
+        *ngFor="let table of tables;let i = index"
+        [id]="'table-'+ i"
+        [style.background]="table.table == selectedTable ? 'green' : 'white'" 
+        (click)="selectTable(table.table)"
+      >
+        {{table.table}}
+      </div>
+    </div>
+  </ion-row>
+</ion-content>

@@ -1,0 +1,111 @@
+<ion-header class="ion-no-padding">
+  <ion-toolbar>
+    <div style="display: flex; align-items: center; height: 100%">
+      <ion-button
+        fill="clear"
+        class="ion-no-padding"
+        [routerLink]="['/tabs/menu']"
+        style="--ripple-color: var(--ion-color-light); width: 10%"
+        ><ion-icon
+          style="font-size: 18px; margin-left: 20px"
+          name="arrow-back-outline"
+        ></ion-icon
+      ></ion-button>
+
+      <ion-title style="font-size: 18px">
+        <span style="font-weight: 600; font-size: 18px"
+          >{{ selectedTable ? ' Table - '+ selectedTable : '' }}</span
+        >
+        
+      </ion-title>
+
+      <span *ngIf="order.length > 0"
+        style="
+          display: inline-block;
+          width: 90%;
+          text-align: right;
+          padding-right: 20px;
+          font-size: 18px;
+        "
+        >{{ totalPrice | currency: "&#8377;" }}</span
+      >
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="order.length ==0">
+  <div class="image">
+    <img src="assets/images/empty.svg"/>
+    <p>Your Cart is Empty!</p>
+  </div>
+  
+</ion-content>
+<ion-content *ngIf="order.length > 0">
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.8)"
+    size="default"
+    color="var(--ion-color-primary)"
+    type="line-spin-clockwise-fade"
+    [fullScreen]="true"
+  ></ngx-spinner>
+  <ion-list
+    class="ion-no-padding"
+    style="width: 100%; padding-bottom: 50px"
+    lines="none"
+  >
+    <ion-item-sliding
+      *ngFor="let item of order; let i = index"
+      [ngStyle]="{ '--animation-order': i }"
+    >
+      <ion-item color="light">
+        <div class="inside-container">
+          <ion-row class="ion-no-padding" style="width: 100%">
+            <ion-col class="ion-no-padding" style="text-align: left"
+              >{{ item.name
+              }}<ion-chip *ngIf="item.variant?.name"
+                ><ion-label>{{ item.variant.name }}</ion-label></ion-chip
+              >
+            </ion-col>
+            <ion-col class="ion-no-padding" style="text-align: right">{{
+              item.price | currency: "&#8377;"
+            }}</ion-col>
+          </ion-row>
+          <ion-row style="font-size: 8px; flex-grow: 8">
+            <ion-col class="ion-no-padding" size="12">
+              <div *ngFor="let addon of item.addon">
+                {{ addon }}
+              </div></ion-col
+            >
+          </ion-row>
+          <ion-row class="plus-minus-button ion-no-padding">
+            <ion-icon
+              name="remove-outline"
+              (click)="decrease(i)"
+              style="margin: 4px 7px"
+            ></ion-icon
+            ><span style="margin: 4px 10px">{{ item.qty }}</span
+            ><ion-icon
+              name="add-outline"
+              (click)="increase(i)"
+              style="margin: 4px 7px"
+            ></ion-icon>
+          </ion-row>
+        </div>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option
+          color="danger"
+          (click)="deleteItem(i, item)"
+          style="border-radius: 14px"
+          >Delete</ion-item-option
+        >
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  
+</ion-content>
+
+
+<ion-button  *ngIf="order.length > 0" class="ordernow" (click)="goToStatus()" expand="full">
+  Order Now
+</ion-button>

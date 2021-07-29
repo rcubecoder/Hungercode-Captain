@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-item-group>
+      <ion-item-divider>
+        <ion-label>Profile</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label>Name</ion-label>
+        <ion-note slot="end" color="primary">{{user?.name}}</ion-note>
+      </ion-item>
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-note slot="end" color="primary">{{user?.email}}</ion-note>
+      </ion-item>
+
+      <ion-item-divider>
+        <ion-label (click)="logout()">Logout</ion-label>
+      </ion-item-divider>
+
+      <!-- <ion-item lines="none">
+        <ion-label>Brianna</ion-label>
+      </ion-item> -->
+
+      <!-- <ion-item-divider>
+        <ion-label>C</ion-label>
+      </ion-item-divider>
+
+      <ion-item lines="none">
+        <ion-label>Carla</ion-label>
+      </ion-item> -->
+    </ion-item-group>
+  </ion-list>
+
+
+</ion-content>

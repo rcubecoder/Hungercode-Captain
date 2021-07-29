@@ -1,0 +1,95 @@
+ion-radio {
+    margin-right: 5px;
+    --border-radius: 3px;
+    --inner-border-radius: none;
+    height: 18px;
+    width: 18px;
+  }
+
+  
+  //custom
+  ion-label{
+    font-size: max(14px, min(3vw, 3vh));
+  }
+  .selected {
+    color: var(--ion-col-primary);
+  }
+  .close-modal {
+    --ripple-color: var(--ion-color-light);
+    margin: 10px 0;
+    height: 20%;
+  }
+  .modal-header {
+    padding: 0px 20px 16px 20px;
+    font-size: max(16px, min(4vw, 4vh));
+    height: 10%;
+    box-shadow: 0 0 24px var(--ion-box-inner-shadow),
+      0 0 12px var(--ion-box-inner-shadow);
+  }
+  .local-items-selected {
+    font-size: 10px;
+    padding: 0;
+    margin-top: 4px;
+    display: block;
+  }
+  .single-options-card {
+    width: 100%;
+    height: 100%;
+    //border: solid 0.5px grey;
+    box-shadow: 0 0 12px var(--ion-box-inner-shadow),
+      0 0 6px var(--ion-box-inner-shadow);
+    border-radius: 10px;
+    overflow-y: scroll !important;
+  }
+  .food-type {
+    width: 100%;
+    padding: 20px;
+    //padding-top: 0;
+    border-bottom: 0.1px solid grey;
+    .radio-food-type {
+      width: 100%;
+      padding-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+  }
+  .addon-checkbox-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+  .increase-quantity {
+    height: 10%;
+    position: absolute;
+    align-items: center;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    display: flex;
+    box-shadow: 0 0 24px var(--ion-box-inner-shadow),
+      0 0 12px var(--ion-box-inner-shadow);
+  }
+  .slide-box-add {
+    animation: addAnim 0.5s;
+  }
+  .slide-box-remove {
+    animation: removeAnim 0.5s;
+  }
+  @keyframes addAnim {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes removeAnim {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-140%);
+    }
+  }
+  

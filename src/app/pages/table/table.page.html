@@ -5,16 +5,44 @@
 </ion-header>
 
 <ion-content>
+  <ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="default"
+  color="var(--ion-color-primary)"
+  type="line-spin-clockwise-fade"
+  [fullScreen]="true"
+></ngx-spinner>
+  <div
+  class="header-details"
+>
+  <span class="header-text" style="color: var(--PYellow)"
+    >{{ total_occupied }} OCCUPIED</span
+  >
+  <span class="header-text" style="color: var(--POrange)"
+    >{{ total_checkout }} CHECKOUT</span
+  >
+  <span class="header-text" style="color: var(--PRed)"
+    >{{ total_tables - total_occupied - total_checkout }} VACANT</span
+  >
+  <span class="header-text" style="color: var(--PBlue)"
+    >{{ total_tables }} TOTAL</span
+  >
+</div>
   <ion-row>
     <div class="tabe-wrapper">
       <div
         class="table"
-        *ngFor="let table of tables;let i = index"
-        [id]="'table-'+ i"
-        [style.background]="table.table == selectedTable ? 'green' : 'white'" 
-        (click)="selectTable(table.table)"
+        *ngFor="let table of tableArray;let i = index"
+        [id]="
+        table.cid
+          ? table.checkout
+            ? 'orange-table'
+            : 'green-table'
+          : 'red-table'
+      "
+        (click)="selectTable(table)"
       >
-        {{table.table}}
+        {{table.table_no}}
       </div>
     </div>
   </ion-row>

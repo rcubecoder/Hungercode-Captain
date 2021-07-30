@@ -38,6 +38,7 @@ export class AuthguardService implements OnInit, CanActivate {
     }
 
     let payload: any = await this.orderService.decryptToken();
+    console.log(payload)
     let isMobile =
       true; /* /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
       navigator.userAgent

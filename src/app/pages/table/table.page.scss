@@ -5,7 +5,9 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    overflow-y: scroll;
 }
+
 .table{
     min-height: 100px;
     min-width: 80px;
@@ -13,4 +15,30 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--ion-color-dark) !important;
+    border-radius: 12px;
+}
+
+.header-details {
+    width: 100%;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    font-size: max(12px, min(2vw, 2vh));
+  
+    .header-text {
+      padding: 0 10px;
+    }
+  }
+
+#orange-table{
+    background-color: var(--POrange);
+}
+
+#green-table{
+    background-color: var(--PYellow);
+}
+
+#red-table{
+    background-color: var(--PRed);
 }

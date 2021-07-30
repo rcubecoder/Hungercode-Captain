@@ -31,10 +31,12 @@ export class DbService {
   table: number;
   subsMenu = new Subject();
   orderSubs = new Subject();
+  seatCustomers:any = [];
+  seatCustomersSub = new Subject();
 
   async getMenuFromFirestore(id): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      if (this.menu && id == this.resId) {
+      if (this.menu.length != 0 && id == this.resId) {
         return resolve(true);
       }
       this.categories = [];
@@ -201,13 +203,28 @@ export class DbService {
     return this.http.post(this.url + "order/checkout", data);
   }
 
-  cat = [
-    { name: "Mexican", order: 1 },
-    { name: "Italian", order: 3 },
-    { name: "Chinese", order: 2 },
-    { name: "Thai", order: 4 },
-    { name: "Beverages", order: 5 },
-  ];
+
+
+  async getCustomers() {
+    if(this.seatCustomers.length == 0){
+    if (!this.resId) {
+    let token =  await this.orderService.decryptToken();
+    this.resId = token.rest_id;
+    }
+    this.Firestore
+      .collection(`restaurants/${this.resId}/customers`)
+      .valueChanges()
+      .subscribe((res: any) => {
+        console.log(res)
+        if (res[0]) {
+          this.seatCustomers=res[0]?.seat||[]
+        }
+        this.seatCustomersSub.next(res[0]?.seat||[])
+      });
+    }else{
+      this.seatCustomersSub.next(this.seatCustomers)
+    }
+  }
 
   /*   addMenu() {
      let menu = new Menu().getMenu('Thai');

@@ -24,3 +24,21 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+:root {
+    --PWhite: #d3d9e0;
+    --PWhitePlace: rgb(211 217 224 / 60%);
+    --PRed: #be5656;
+    --PBlue: #0176ff;
+    --PYellow: #a2aa74;
+    --POrange: #e2954e;
+  
+    // --PRed:  rgb(168, 56, 93);
+    --PBGblue: #1d2737;
+    --SBGblue: #2f3b4e;
+    --SBBGblue: #23334c;
+    --TBGblue: #364762;
+    --QBGblue: #233148;
+    --spinnerDeg: 0deg; 
+  
+  }

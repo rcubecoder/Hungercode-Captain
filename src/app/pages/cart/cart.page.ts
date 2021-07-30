@@ -32,6 +32,8 @@ export class CartPage implements ViewWillEnter {
   token = "";
   loading = false;
   selectedTable
+
+  
   async ionViewWillEnter() {
     let table = localStorage.getItem('selectedTable')
     if(table){

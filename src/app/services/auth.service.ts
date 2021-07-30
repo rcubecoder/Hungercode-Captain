@@ -64,4 +64,8 @@ export class AuthService {
   changePassword(data) {
     return this.http.put(this.url + 'auth/change-password', data)
   }
+
+  verifySession(data){
+    return this.http.post(this.url+ 'auth/verify-session', data)
+  }
 }

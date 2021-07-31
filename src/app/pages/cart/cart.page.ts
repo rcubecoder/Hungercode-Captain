@@ -194,13 +194,19 @@ export class CartPage implements ViewWillEnter {
               )
             );
             this.showLoader();
-            this.dbService.placeOrder(order).subscribe(
-              (res) => {
+            this.orderService.placeOrder(order).subscribe(
+              async(res:any) => {
                 this.hideLoader();
                 console.log(res);
                 if (res.success) {
                   localStorage.removeItem("orders");
-                  this.router.navigate([`/tabs/order`]);
+                  let toast = await this.toast.create({
+                    message: res.message,
+                    duration: 3000,
+                    position: "top",
+                  });
+                  await toast.present();
+                  this.router.navigate([`/tabs/table`]);
                 }
               },
               async (err) => {

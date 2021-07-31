@@ -101,7 +101,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       header: "Confirm",
       inputs: [
         {
-          placeholder: "Add Cooking Instrucion",
+          placeholder: "Enter Customer Name",
           type: "text",
           
         },
@@ -130,6 +130,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
                 this.hideLoader();
                 console.log(res);
                 if (res.success) {
+                  localStorage.setItem('selectedTable', table.table_no)
                   this.router.navigate([`/tabs/menu`]);
                 }
               },

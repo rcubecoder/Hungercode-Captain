@@ -133,9 +133,6 @@ export class DbService {
     return this.categories.slice();
   }
 
-  placeOrder(order) {
-    return this.http.post<any>(this.url + "order/place-order", order);
-  }
 
   getOrder(data) {
     let order, doc;

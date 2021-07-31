@@ -1,17 +1,16 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { Observable, Subject } from "rxjs";
-import { map } from "rxjs/operators";
 import * as crypto from "crypto-js";
 import { environment } from "src/environments/environment";
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { HttpClient } from "@angular/common/http";
+
 
 @Injectable({
   providedIn: "root",
 })
 export class OrderService {
   constructor(
-    private Firestore: AngularFirestore
+    private http: HttpClient,
   ) {}
 
   orderItems: any = [];
@@ -21,7 +20,8 @@ export class OrderService {
   token = "";
   isModelOpen: boolean = false;
   selectedTable
-
+  url = environment.API.url;
+   
   getModelStatus() {
     return this.isModelOpen;
   }
@@ -36,6 +36,11 @@ export class OrderService {
 
   setSelectedTable(table){
    this.selectedTable = table
+  }
+
+  placeOrder(order){
+    let table_no = localStorage.getItem('selectedTable')
+    return this.http.post(this.url+'order/add-order/'+table_no, order)
   }
  
   getOrderItems() {
@@ -144,12 +149,6 @@ export class OrderService {
     localStorage.setItem("final_invoice", JSON.stringify(this.finalInvoice));
 
   }
-
-  /*setFinalOrder(order) {
-    this.orderItems = [];
-    this.finalOrder.push(order);
-    this.setFinalInvoice(order);
-  }*/
 
   getFinalOrder() {
     return JSON.parse(JSON.stringify(this.finalOrder));

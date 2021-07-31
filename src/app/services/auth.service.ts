@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -7,7 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   url = environment.API.url;
   user: any;
@@ -38,6 +39,11 @@ export class AuthService {
         if(res.success){
           this.tables = Number(res.data.tables)
           this.tableSub.next(this.tables)
+        }
+      }, err => {
+        if(err.status == 401){
+          localStorage.removeItem('auth_token')
+          this.router.navigate(['/login'])
         }
       })
     }else{

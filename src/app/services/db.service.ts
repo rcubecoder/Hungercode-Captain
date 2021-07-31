@@ -133,75 +133,6 @@ export class DbService {
     return this.categories.slice();
   }
 
-
-  getOrder(data) {
-    let order, doc;
-    if (data.table == "takeaway") {
-      doc = `${data.cid}`;
-      order = "torder";
-    } else {
-      doc = `table-${data.table}`;
-      order = "order";
-    }
-    return this.Firestore.collection(`restaurants`)
-      .doc(data.rest_id)
-      .collection(order)
-      .doc(doc)
-      .valueChanges()
-      .subscribe(async (res) => {
-        if (res) {
-          if (!res.restore) {
-            let message = "";
-            res.order.map((ele, i) => {
-              if (ele.restore) {
-                if (this.order[i] && !this.order[i].restore) {
-                  message = `You order-${
-                    i + 1
-                  } has been canceled by restaurant!`;
-                }
-              }
-
-              if (!ele.restore) {
-                if (this.order[i] && this.order[i].restore) {
-                  message = `You order-${
-                    i + 1
-                  } has been restored by restaurant!`;
-                }
-              }
-            });
-
-            if (message) {
-              let toast = await this.toast.create({
-                message: message,
-                duration: 3000,
-                position: "top",
-              });
-              await toast.present();
-            }
-
-            this.order = res.order;
-            this.setDatabaseOrder(res.order);
-            this.orderSubs.next(res.order);
-            this.orderService.setFinalOrder(res);
-          }
-        }
-      });
-  }
-
-  setDatabaseOrder(order) {
-    this.order = JSON.parse(JSON.stringify(order));
-  }
-
-  getDataBaseOrder() {
-    return JSON.parse(JSON.stringify(this.order));
-  }
-
-  checkout(data) {
-    return this.http.post(this.url + "order/checkout", data);
-  }
-
-
-
   async getCustomers() {
     if(this.seatCustomers.length == 0){
     if (!this.resId) {
@@ -215,8 +146,32 @@ export class DbService {
         console.log(res)
         if (res[0]) {
           this.seatCustomers=res[0]?.seat||[]
+
+          let table = localStorage.getItem('selectedTable');
+
+          if(table){
+            let valid = false
+            for(let cust of this.seatCustomers){
+              if(cust.table == table){
+                valid = true
+                break
+              }
+              if(!valid){
+                localStorage.removeItem('selectedTable');
+              }
+            }
+          }
         }
-        this.seatCustomersSub.next(res[0]?.seat||[])
+        this.seatCustomersSub.next(this.seatCustomers)
+        if(this.seatCustomers.length == 0){
+          localStorage.removeItem('selectedTable')
+        }
+       
+      },err=>{
+        if(err.status == 401){
+          localStorage.removeItem('auth_token')
+          this.router.navigate(['/login'])
+        }
       });
     }else{
       this.seatCustomersSub.next(this.seatCustomers)

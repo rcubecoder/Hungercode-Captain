@@ -9,6 +9,7 @@ import {
 } from "@angular/router";
 import { Observable } from "rxjs";
 import { DbService } from "./db.service";
+import { ToastController } from "@ionic/angular";
 
 
 @Injectable({
@@ -19,7 +20,8 @@ export class AuthguardService implements OnInit, CanActivate {
     private orderService: OrderService,
     private dbService: DbService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toast: ToastController
   ) {}
 
   ngOnInit() {
@@ -33,6 +35,12 @@ export class AuthguardService implements OnInit, CanActivate {
 
     let selectedTable =  localStorage.getItem('selectedTable')
     if(!selectedTable){
+      let toast = await this.toast.create({
+        message: 'Please select table first',
+        duration: 3000,
+        position: "top",
+      });
+      await toast.present();
       this.router.navigate(["/tabs/table"]);
       return false;
     }
@@ -43,7 +51,6 @@ export class AuthguardService implements OnInit, CanActivate {
       true; /* /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
       navigator.userAgent
     );*/
-
 
     if (payload.rest_id && isMobile) {
       return new Promise(async (resolve, reject) => {

@@ -12,8 +12,6 @@ export class AuthService {
 
   url = environment.API.url;
   user: any;
-  tables;
-  tableSub = new Subject();
   userSub = new Subject();
   login(data) {
     return this.http.post<any>(this.url + 'auth/login', data);
@@ -31,24 +29,6 @@ export class AuthService {
       this.userSub.next(this.user)
     }
     
-  }
-
-  getTables(){
-    if(!this.tables){
-      this.http.get<any>(this.url+'auth/tables').subscribe((res)=>{
-        if(res.success){
-          this.tables = Number(res.data.tables)
-          this.tableSub.next(this.tables)
-        }
-      }, err => {
-        if(err.status == 401){
-          localStorage.removeItem('auth_token')
-          this.router.navigate(['/login'])
-        }
-      })
-    }else{
-      this.tableSub.next(this.tables)
-    }
   }
 
   isLoggedIn() {

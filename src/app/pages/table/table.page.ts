@@ -39,19 +39,16 @@ export class TablePage implements ViewWillEnter, OnDestroy {
     if (table) {
       this.selectedTable = table
     }
-   await this.auth.getTables()
-   
-   this.tableSub = this.auth.tableSub.subscribe((res) => {
-      this.total_tables = Number(res)
-      if (table && Number(table) > res) {
-        localStorage.setItem('selectedTable', '1')
-        this.selectedTable = '1'
-      }
       this.dbService.getCustomers();
-    })
+ 
 
    this.custSub = this.dbService.seatCustomersSub.subscribe((res:any) => {
-      this.customers = res;
+    if (table && Number(table) > res) {
+      localStorage.removeItem('selectedTable')
+      this.selectedTable = ''
+    }
+      this.customers = res[0];
+      this.total_tables = res[1]
       this.setTable();
     })
   }

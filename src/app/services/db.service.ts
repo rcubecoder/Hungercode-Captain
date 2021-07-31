@@ -28,7 +28,7 @@ export class DbService {
   order: any = [];
   category: string;
   resId: string;
-  table: number;
+  tables: number;
   subsMenu = new Subject();
   orderSubs = new Subject();
   seatCustomers:any = [];
@@ -146,6 +146,7 @@ export class DbService {
         console.log(res)
         if (res[0]) {
           this.seatCustomers=res[0]?.seat||[]
+          this.tables = Number(res[0].tables)
 
           let table = localStorage.getItem('selectedTable');
 
@@ -162,7 +163,7 @@ export class DbService {
             }
           }
         }
-        this.seatCustomersSub.next(this.seatCustomers)
+        this.seatCustomersSub.next([this.seatCustomers,this.tables])
         if(this.seatCustomers.length == 0){
           localStorage.removeItem('selectedTable')
         }
@@ -174,7 +175,7 @@ export class DbService {
         }
       });
     }else{
-      this.seatCustomersSub.next(this.seatCustomers)
+      this.seatCustomersSub.next([this.seatCustomers, this.tables])
     }
   }
 

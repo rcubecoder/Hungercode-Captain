@@ -41,7 +41,7 @@ export class SearchPage implements ViewWillEnter {
   drive_url = "https://drive.google.com/thumbnail?id=";
   orderItems: any = [];
   async ionViewWillEnter() {
-    console.log('ionViewWillEnter')
+    let searchMenu = this.dbService.getAllMenu();
     this.menuCards = [...this.dbService.searchMenu];
 
     if (this.menuCards.length == 0) {
@@ -68,13 +68,13 @@ export class SearchPage implements ViewWillEnter {
   }
 
   async getMenu() {
-    this.menuCards = [];
-    let token: any = await this.orderService.decryptToken();
-    this.dbService
-      .getMenuFromFirestoreByRestId(token.rest_id)
-      .subscribe((res: any) => {
-        this.menuCards = [...res.data().menu];
-      });
+      this.dbService
+        .getMenuFromDb()
+        .subscribe((res: any) => {
+          if(res.success){
+            this.menuCards = [...res.data];
+          }
+        });
   }
 
   searchForFood(event) {

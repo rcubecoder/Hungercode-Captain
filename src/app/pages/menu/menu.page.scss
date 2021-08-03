@@ -9,11 +9,7 @@ ion-button {
 ion-badge {
   font-size: 12px;
 }
-ion-title {
-  padding-left: 16px;
-  height: 20px;
-  font-size: max(16px, min(4vw, 4vh));
-}
+
 ion-label {
   font-size:max(14px, min(3vw, 3vh)) ;
 }
@@ -33,6 +29,11 @@ ion-card {
  // box-shadow: inset 1px 1px 5px var(--ion-color-light);
   border-radius: 10px;
   background-size: cover;
+}
+
+ion-segment-button{
+  min-width: auto !important;
+  --color-checked: var(--ion-color-primary) !important;
 }
 
 // custom //

@@ -42,3 +42,18 @@
     --spinnerDeg: 0deg; 
   
   }
+
+  ion-title {
+    padding-left: 16px;
+    height: 24px;
+    font-size: max(16px, min(4vw, 4vh));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    position: inherit;
+    text-align: left;
+  }
+  
+  ion-toolbar{
+    --min-height: 56px !important;
+  }

@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>table</ion-title>
+    <ion-title>Table</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -30,8 +30,8 @@
 </div>
   <ion-row>
     <div class="tabe-wrapper">
-      <div
-        class="table"
+     <ion-card
+     
         *ngFor="let table of tableArray;let i = index"
         [id]="
         table.cid
@@ -43,7 +43,7 @@
         (click)="selectTable(table)"
       >
         {{table.table_no}}
-      </div>
+      </ion-card>
     </div>
   </ion-row>
 </ion-content>

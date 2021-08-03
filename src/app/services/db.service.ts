@@ -109,16 +109,17 @@ export class DbService {
     });
   }
 
-  getMenuFromFirestoreByRestId(id) {
-    console.log(id);
-    return this.Firestore.collection(`restaurants/${id}/menu`)
-      .doc("menu")
-      .get();
+  getMenuFromDb() {
+    return this.http.get(this.url+'menu')
   }
 
   getMenu(cat) {
     this.category = cat;
     return JSON.parse(JSON.stringify(this.menu[`${cat}`] || []));
+  }
+
+  getAllMenu() {
+    return JSON.parse(JSON.stringify(this.searchMenu || []));
   }
 
   getCategory() {

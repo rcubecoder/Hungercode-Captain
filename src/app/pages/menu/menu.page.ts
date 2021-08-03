@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from "@angular/core";
 import {
   ModalController,
   ViewWillEnter,
@@ -12,13 +12,14 @@ import { AngularFirestoreCollection } from "@angular/fire/firestore";
 import { ActivatedRoute, Router } from "@angular/router";
 import { DbService } from "src/app/services/db.service";
 import { AuthService } from "src/app/services/auth.service";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-menu",
   templateUrl: "./menu.page.html",
   styleUrls: ["./menu.page.scss"],
 })
-export class MenuPage implements ViewWillEnter {
+export class MenuPage implements ViewWillEnter, OnDestroy{
   constructor(
     private modalController: ModalController,
     private orderService: OrderService,
@@ -57,12 +58,13 @@ export class MenuPage implements ViewWillEnter {
   mainMenu: any;
   token = "";
   drive_url = "https://drive.google.com/thumbnail?id=";
+  subscription: Subscription
   async ionViewWillEnter() {
     let table = localStorage.getItem('selectedTable')
     if(table){
       this.selectedTable = table
     }
-    this.dbService.subsMenu.subscribe(async (res: any) => {
+  this.subscription =  this.dbService.subsMenu.subscribe(async (res: any) => {
       console.log("subsss", res);
       if (res && res.id) {
         if (
@@ -285,5 +287,9 @@ export class MenuPage implements ViewWillEnter {
         this.menuCards[index].customize = 0;
       }
     });
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

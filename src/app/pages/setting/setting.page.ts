@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ViewWillEnter } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 
 
@@ -9,17 +10,17 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './setting.page.html',
   styleUrls: ['./setting.page.scss'],
 })
-export class SettingPage implements ViewWillEnter {
+export class SettingPage implements ViewWillEnter, OnDestroy {
 
   constructor(private authService:AuthService, private router:Router,  private altCtrl: AlertController,) {
      
    
   }
   user :any;
-
+ subscription: Subscription
   ionViewWillEnter(){
    this.authService.getUser();
-   this.authService.userSub.subscribe(res=>{
+   this.subscription = this.authService.userSub.subscribe(res=>{
      this.user = res
    })
    
@@ -58,5 +59,9 @@ export class SettingPage implements ViewWillEnter {
 
 
 
+  }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
   }
 }

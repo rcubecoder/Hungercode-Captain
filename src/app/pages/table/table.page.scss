@@ -8,6 +8,16 @@
     overflow-y: scroll;
 }
 
+ion-card {
+    min-height: 100px;
+    min-width: 80px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--ion-color-dark) !important;
+  }
+
 .table{
     min-height: 100px;
     min-width: 80px;

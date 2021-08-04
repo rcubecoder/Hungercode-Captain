@@ -139,8 +139,8 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     });
   }
 
-  async segmentChanged(value) {
-    this.category = value;
+  async segmentChanged(event) {
+    this.category = event.detail.value;
     await this.chooseMenucards();
     this.orderItems.map((item) => {
       if (this.category == "Special" || this.category == item.category) {

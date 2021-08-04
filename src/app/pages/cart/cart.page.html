@@ -2,6 +2,7 @@
   <ion-toolbar>
     <div style="display: flex; align-items: center; height: 100%">
       <ion-button
+        [disabled]="loading"
         fill="clear"
         class="ion-no-padding"
         [routerLink]="['/tabs/menu']"

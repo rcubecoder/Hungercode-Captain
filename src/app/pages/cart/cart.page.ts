@@ -231,13 +231,14 @@ export class CartPage implements ViewWillEnter {
     await alert.present();
   }
   hideLoader() {
+    this.orderService.hideTabs.next("unabled");
     this.loading = false;
     this.spinner.hide();
   }
-
   showLoader() {
     this.loading = true;
     setTimeout(() => {
+      this.orderService.hideTabs.next("disabled");
       if (this.loading) {
         this.spinner.show();
       }

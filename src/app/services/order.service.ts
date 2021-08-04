@@ -3,6 +3,7 @@ import * as crypto from "crypto-js";
 import { environment } from "src/environments/environment";
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { HttpClient } from "@angular/common/http";
+import { Subject } from "rxjs";
 
 
 @Injectable({
@@ -21,7 +22,8 @@ export class OrderService {
   isModelOpen: boolean = false;
   selectedTable
   url = environment.API.url;
-   
+  hideTabs = new Subject();
+
   getModelStatus() {
     return this.isModelOpen;
   }

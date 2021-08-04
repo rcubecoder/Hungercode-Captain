@@ -11,8 +11,16 @@ export class TabsComponent implements OnInit {
 
   constructor(private route:ActivatedRoute, private orderService:OrderService) { }
   
+  tabsOn=false;
   ngOnInit() {
-
+    this.orderService.hideTabs.subscribe((res)=>{
+      if(res=="disabled"){
+        this.tabsOn=true;
+      }
+      else{
+        this.tabsOn=false;
+      }
+    })
   }
 
 }

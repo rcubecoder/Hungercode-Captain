@@ -47,18 +47,7 @@ export class OrderService {
       console.log("order items in service........", this.orderItems);
       return JSON.parse(JSON.stringify(this.orderItems));
     }
-    let items = localStorage.getItem("orders");
-    if (items) {
-      let item = JSON.parse(items);
-      this.orderItems = [...item];
-      return this.orderItems;
-    }
     return [];
-  }
-
-  removeOrderFormCart() {
-    localStorage.removeItem("orders");
-    this.orderItems = [];
   }
 
   async sendOrderToCart() {
@@ -66,13 +55,7 @@ export class OrderService {
     console.log('send order to cart',order)
     let newOrderItems = [];
     let orderItems: any[];
-    if (!order.length) {
-      let items: any = localStorage.getItem("orders");
-      if (items) {
-        order = JSON.parse(items);
-        this.orderItems = JSON.parse(JSON.stringify(order));
-      }
-    }
+
     await order.map((item) => {
       let include: any = "";
       for (let i = 0; i < item.data.length; i++) {
@@ -114,8 +97,6 @@ export class OrderService {
 
   setOrderItems(items) {
     this.orderItems = items;
-    console.log("set in locallllllll", this.orderItems);
-    localStorage.setItem("orders", JSON.stringify(this.orderItems));
   }
 
   spliceOrderItems(index) {

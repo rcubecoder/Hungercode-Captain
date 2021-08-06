@@ -15,9 +15,6 @@ export class OrderService {
   ) {}
 
   orderItems: any = [];
-  finalOrder: any = [];
-  finalInvoice: any;
-  orderFromFirestore:any = [];
   token = "";
   isModelOpen: boolean = false;
   selectedTable
@@ -57,6 +54,11 @@ export class OrderService {
       return this.orderItems;
     }
     return [];
+  }
+
+  removeOrderFormCart() {
+    localStorage.removeItem("orders");
+    this.orderItems = [];
   }
 
   async sendOrderToCart() {
@@ -129,70 +131,6 @@ export class OrderService {
     orderitems.splice(i, 1);
     this.orderItems = orderitems;
     return this.orderItems.slice();
-  }
-
-  setFinalOrder(res) {
-    this.orderItems = [];
-    this.finalOrder = [];
-    this.finalInvoice = {};
-    res = JSON.parse(JSON.stringify(res));
-    for (let ele of res.order) {
-      if (ele.restore || ele.cancel) {
-        continue;
-      }
-      let data = ele.data.filter((e) => !e.restore);
-      ele.data = data;
-      this.setFinalInvoice(ele);
-    }
-    if (res.unique) {
-      this.finalInvoice.unique = true;
-    }
-
-    localStorage.setItem("final_invoice", JSON.stringify(this.finalInvoice));
-
-  }
-
-  getFinalOrder() {
-    return JSON.parse(JSON.stringify(this.finalOrder));
-  }
-
-  setFinalInvoice(order) {
-    if (this.finalInvoice.data) {
-      this.finalInvoice.taxable += order.taxable;
-      this.finalInvoice.qty += order.qty;
-      let index = this.finalInvoice.data.length;
-      for (let i = 0; i < order.data.length; i++) {
-        let flag = true;
-        for (let j = 0; j < index; j++) {
-          if (
-            order.data[i].name == this.finalInvoice.data[j].name &&
-            order.data[i].type == this.finalInvoice.data[j].type &&
-            order.data[i].addon.length == this.finalInvoice.data[j].addon.length
-          ) {
-            let check = order.data[i].addon.every(
-              (el) => this.finalInvoice.data[j].addon.indexOf(el) >= 0
-            );
-            if (check == true) {
-              this.finalInvoice.data[j].qty += order.data[i].qty;
-              this.finalInvoice.data[j].price += order.data[i].price;
-              flag = false;
-              break;
-            }
-          }
-        }
-        if (flag) {
-          this.finalInvoice.data.push(order.data[i]);
-        }
-      }
-    } else {
-      delete order.id;
-      delete order.inst;
-      this.finalInvoice = JSON.parse(JSON.stringify(order));
-    }
-  }
-
-  getFinalInvoice() {
-    return this.finalInvoice;
   }
 
   setToken(token) {

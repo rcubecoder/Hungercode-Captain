@@ -197,9 +197,8 @@ export class CartPage implements ViewWillEnter {
             this.orderService.placeOrder(order).subscribe(
               async(res:any) => {
                 this.hideLoader();
-                console.log(res);
                 if (res.success) {
-                  localStorage.removeItem("orders");
+                  this.orderService.removeOrderFormCart();
                   let toast = await this.toast.create({
                     message: res.message,
                     duration: 3000,

@@ -57,3 +57,63 @@
   ion-toolbar{
     --min-height: 56px !important;
   }
+
+  * {
+    font-family: "Open Sans", sans-serif;
+  }
+  
+  body {
+    height: 100%;
+    // pointer cursor
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                      supported by Chrome and Opera */
+  }
+  
+  .food-options-container .modal-wrapper {
+    position: fixed;
+    bottom: 0;
+    --height: 75%;
+   // box-shadow: 6px 6px 8px 6px #ccc;
+    //clip-path: circle(70% at 50% 70%);
+  }
+  
+  .details-container .modal-wrapper {
+    position: absolute;
+    top: 61px;
+    --height: 50%;
+    //box-shadow: 6px 6px 8px 6px #ccc;
+  }
+  .modal-wrapper.sc-ion-modal-md,
+  .modal-shadow.sc-ion-modal-md {
+    z-index: 5 !important;
+  }
+  
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    background-color: var(--ion-color-primary) !important;
+  }
+  
+  //firefox mate baki che
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    transition: background-color 500s ease-in-out 0s;
+    -webkit-text-fill-color: inherit !important;
+    // opacity: 80%;
+  }

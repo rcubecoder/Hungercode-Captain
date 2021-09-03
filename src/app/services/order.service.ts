@@ -1,23 +1,20 @@
-import { Injectable } from "@angular/core";
-import * as crypto from "crypto-js";
-import { environment } from "src/environments/environment";
+import { Injectable } from '@angular/core';
+import * as crypto from 'crypto-js';
+import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { HttpClient } from "@angular/common/http";
-import { Subject } from "rxjs";
-
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class OrderService {
-  constructor(
-    private http: HttpClient,
-  ) {}
+  constructor(private http: HttpClient) {}
 
   orderItems: any = [];
-  token = "";
+  token = '';
   isModelOpen: boolean = false;
-  selectedTable
+  selectedTable;
   url = environment.API.url;
   hideTabs = new Subject();
 
@@ -29,22 +26,26 @@ export class OrderService {
     this.isModelOpen = status;
   }
 
-  getSelectedTable(){
-    return this.selectedTable
+  getSelectedTable() {
+    return this.selectedTable;
   }
 
-  setSelectedTable(table){
-   this.selectedTable = table
+  setSelectedTable(table) {
+    this.selectedTable = table;
   }
 
-  placeOrder(order){
-    let table_no = localStorage.getItem('selectedTable')
-    return this.http.post(this.url+'order/add-order/'+table_no, order)
+  placeOrder(order) {
+    let table_no = localStorage.getItem('selectedTable');
+    let type = localStorage.getItem('type');
+    return this.http.post(
+      this.url + 'order/add-order/' + table_no + type ? '/' + type : '',
+      order
+    );
   }
- 
+
   getOrderItems() {
     if (this.orderItems.length) {
-      console.log("order items in service........", this.orderItems);
+      console.log('order items in service........', this.orderItems);
       return JSON.parse(JSON.stringify(this.orderItems));
     }
     return [];
@@ -52,12 +53,12 @@ export class OrderService {
 
   async sendOrderToCart() {
     let order: any[] = JSON.parse(JSON.stringify(this.orderItems));
-    console.log('send order to cart',order)
+    console.log('send order to cart', order);
     let newOrderItems = [];
     let orderItems: any[];
 
     await order.map((item) => {
-      let include: any = "";
+      let include: any = '';
       for (let i = 0; i < item.data.length; i++) {
         if (include.includes(` ${i} `)) {
           continue;
@@ -87,7 +88,7 @@ export class OrderService {
           );
         }
       }
-      console.log("newOrder", newOrderItems);
+      console.log('newOrder', newOrderItems);
     });
     return [
       newOrderItems,
@@ -106,7 +107,7 @@ export class OrderService {
   removeOrderItem(category, id) {
     let orderitems = [...this.orderItems];
     let i = orderitems.findIndex((i) => {
-      return i.id == id
+      return i.id == id;
     });
     console.log(orderitems, i);
     orderitems.splice(i, 1);
@@ -123,23 +124,23 @@ export class OrderService {
   }
 
   async decryptToken(token?): Promise<any> {
-    if(!token){
-      token =  localStorage.getItem('auth_token')
-      console.log(token)
+    if (!token) {
+      token = localStorage.getItem('auth_token');
+      console.log(token);
     }
     return new Promise(async (resolve, reject) => {
-      const helper=new JwtHelperService();
+      const helper = new JwtHelperService();
       try {
-          const decoded=helper.decodeToken(token);
-          let decrypt=await crypto.AES.decrypt(
-            decoded.token,
-            environment.enc_secret
-          );
-          let decryptData=await JSON.parse(decrypt.toString(crypto.enc.Utf8));
+        const decoded = helper.decodeToken(token);
+        let decrypt = await crypto.AES.decrypt(
+          decoded.token,
+          environment.enc_secret
+        );
+        let decryptData = await JSON.parse(decrypt.toString(crypto.enc.Utf8));
 
         resolve(decryptData);
       } catch (e) {
-        console.log("error", e);
+        console.log('error', e);
         resolve(false);
       }
     });

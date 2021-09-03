@@ -18,40 +18,42 @@ export class AuthService {
   }
 
   getUser() {
-    if(!this.user){
-      this.http.get<any>(this.url + 'auth/user').subscribe((res:any) => {
-        if(res.success){
+    if (!this.user) {
+      this.http.get<any>(this.url + 'auth/user').subscribe((res: any) => {
+        if (res.success) {
           this.user = res.data;
-          this.userSub.next(this.user)
+          this.userSub.next(this.user);
         }
-      })
-    }else{
-      this.userSub.next(this.user)
+      });
+    } else {
+      this.userSub.next(this.user);
     }
-    
   }
 
   isLoggedIn() {
     return !!localStorage.getItem('firestep_auth_token');
   }
-  
+
   forgotPassSendCode(data) {
-    return this.http.put(this.url + 'auth/forgot-password', data)
+    return this.http.put(this.url + 'auth/forgot-password', data);
   }
 
-  
   checkVerificationCodeForgotPass(data) {
     return this.http.put(
       this.url + 'auth/forgot-password/verification-code',
-      data,
-    )
+      data
+    );
   }
 
   changePassword(data) {
-    return this.http.put(this.url + 'auth/change-password', data)
+    return this.http.put(this.url + 'auth/change-password', data);
   }
 
-  verifySession(data){
-    return this.http.post(this.url+ 'auth/verify-session', data)
+  verifySession(data) {
+    let type = localStorage.getItem('type');
+    if (type) {
+      data.type = type;
+    }
+    return this.http.post(this.url + 'auth/verify-session', data);
   }
 }

@@ -110,9 +110,9 @@ export class DbService {
     });
   }
 
-  /*   getMenuFromDb() {
+  getMenuFromDb() {
     return this.http.get(this.url + 'menu');
-  } */
+  }
 
   getMenu(cat) {
     this.category = cat;
@@ -162,6 +162,10 @@ export class DbService {
 
   getCategories() {
     return this.categories.slice();
+  }
+
+  setMenu(menu) {
+    this.searchMenu = JSON.parse(JSON.stringify(menu));
   }
 
   async getCustomers() {

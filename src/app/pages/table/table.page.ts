@@ -50,6 +50,10 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   custSub: Subscription;
 
   async ionViewWillEnter() {
+    let token = localStorage.getItem('auth_token');
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
     let table = localStorage.getItem('selectedTable');
     if (table) {
       this.selectedTable = table;
@@ -82,14 +86,30 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           if (index != -1) {
             this.currentTables = Number(this.restType[index].tables);
           }
-        } 
-      }else {
+        }
+      } else {
         localStorage.removeItem('type');
         this.currentTables = this.total_tables;
         this.currentCustomers = this.customers;
       }
       this.setTable();
     });
+  }
+
+  changeRestType(event) {
+    let type = event.detail.value;
+    this.currentRestType = type;
+    localStorage.setItem('type', type);
+    this.currentCustomers = this.customers.filter((e) => e.type == type);
+    let index = this.restType
+      .map((e) => {
+        return e.value;
+      })
+      .indexOf(type);
+    if (index != -1) {
+      this.currentTables = Number(this.restType[index].tables);
+    }
+    this.setTable();
   }
 
   setTable() {

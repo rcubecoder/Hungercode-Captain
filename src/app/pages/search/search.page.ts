@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { ModalController, ViewWillEnter } from "@ionic/angular";
-import { MenuoptionsComponent } from "src/app/components/menuoptions/menuoptions.component";
-import { DbService } from "src/app/services/db.service";
-import { OrderService } from "src/app/services/order.service";
-import { Animation, createAnimation } from "@ionic/core";
+import { Component, OnInit } from '@angular/core';
+import { ModalController, ViewWillEnter } from '@ionic/angular';
+import { MenuoptionsComponent } from 'src/app/components/menuoptions/menuoptions.component';
+import { DbService } from 'src/app/services/db.service';
+import { OrderService } from 'src/app/services/order.service';
+import { Animation, createAnimation } from '@ionic/core';
 
 @Component({
-  selector: "app-search",
-  templateUrl: "./search.page.html",
-  styleUrls: ["./search.page.scss"],
+  selector: 'app-search',
+  templateUrl: './search.page.html',
+  styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements ViewWillEnter {
   constructor(
@@ -21,28 +21,28 @@ export class SearchPage implements ViewWillEnter {
     rootElement: HTMLElement
   ): Animation {
     return createAnimation()
-      .addElement(rootElement.querySelector(".modal-wrapper"))
+      .addElement(rootElement.querySelector('.modal-wrapper'))
       .duration(200)
-      .fromTo("transform", "translateY(100%)", "translateY(0)")
-      .fromTo("opacity", 1, 1);
+      .fromTo('transform', 'translateY(100%)', 'translateY(0)')
+      .fromTo('opacity', 1, 1);
   };
   animExit = function modalEnterAnimation(rootElement: HTMLElement): Animation {
     return createAnimation()
-      .addElement(rootElement.querySelector(".modal-wrapper"))
+      .addElement(rootElement.querySelector('.modal-wrapper'))
       .duration(200)
-      .fromTo("transform", "translateY(0)", "translateY(100%)")
-      .fromTo("opacity", 1, 1);
+      .fromTo('transform', 'translateY(0)', 'translateY(100%)')
+      .fromTo('opacity', 1, 1);
   };
 
   menuCards: any = [];
   tempMenuCards: any = [];
   pushSearch = [];
-  cardColors = ["#e4efe0", "#e4e3f1", "#dceaf3", "#f6dfd4", "#f3f3f3"];
-  drive_url = "https://drive.google.com/thumbnail?id=";
+  cardColors = ['#e4efe0', '#e4e3f1', '#dceaf3', '#f6dfd4', '#f3f3f3'];
+  drive_url = 'https://drive.google.com/thumbnail?id=';
   orderItems: any = [];
   async ionViewWillEnter() {
     let searchMenu = this.dbService.getAllMenu();
-    this.menuCards = [...this.dbService.searchMenu];
+    this.menuCards = [...searchMenu];
 
     if (this.menuCards.length == 0) {
       this.getMenu();
@@ -52,29 +52,27 @@ export class SearchPage implements ViewWillEnter {
 
     this.orderItems.map((item) => {
       let index = this.tempMenuCards
-      .map((ele) => {
-      return ele.id;
-      })
-      .indexOf(item.id);
+        .map((ele) => {
+          return ele.id;
+        })
+        .indexOf(item.id);
       if (index != -1) {
-      if (item.customize == false) {
-      this.tempMenuCards[index].customize = item.data[0].qty;
-      } else {
-      this.tempMenuCards[index].customize = item.data.length;
+        if (item.customize == false) {
+          this.tempMenuCards[index].customize = item.data[0].qty;
+        } else {
+          this.tempMenuCards[index].customize = item.data.length;
+        }
       }
-      }
-      });
-      
+    });
   }
 
   async getMenu() {
-      this.dbService
-        .getMenuFromDb()
-        .subscribe((res: any) => {
-          if(res.success){
-            this.menuCards = [...res.data];
-          }
-        });
+    this.dbService.getMenuFromDb().subscribe(async (res: any) => {
+      if (res.success) {
+        this.dbService.setMenu(res.data);
+        this.menuCards = await this.dbService.getAllMenu();
+      }
+    });
   }
 
   searchForFood(event) {
@@ -173,7 +171,7 @@ export class SearchPage implements ViewWillEnter {
     const modalOptions = Object.assign({}, menu);
     let selectedItems: any;
     let orderitems: any, tempIndex: number;
-    if (type == "customize") {
+    if (type == 'customize') {
       orderitems = [...this.orderItems];
       tempIndex = orderitems.findIndex((i) => {
         return i.id == menu.id;
@@ -185,7 +183,7 @@ export class SearchPage implements ViewWillEnter {
 
     const modal = await this.modalController.create({
       component: MenuoptionsComponent,
-      cssClass: "food-options-container",
+      cssClass: 'food-options-container',
       animated: true,
       backdropDismiss: false,
       enterAnimation: this.animEnter,
@@ -202,7 +200,7 @@ export class SearchPage implements ViewWillEnter {
       this.orderService.setModelStatus(false);
       console.log(order.data);
       if (order.data.length != 0) {
-        if (type == "customize") {
+        if (type == 'customize') {
           orderitems[tempIndex].data = order.data;
           this.orderItems = orderitems;
           this.tempMenuCards[index].customize = order.data.length;
@@ -220,7 +218,7 @@ export class SearchPage implements ViewWillEnter {
           JSON.parse(JSON.stringify(this.orderItems))
         );
       } else {
-        if (type == "customize") {
+        if (type == 'customize') {
           orderitems.splice(tempIndex, 1);
           this.orderItems = orderitems;
         }

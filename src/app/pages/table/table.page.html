@@ -1,37 +1,45 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Table</ion-title>
+    <div class="title">
+      <span>Table</span>
+      <ion-select
+        interface="popover"
+        [value]="currentRestType"
+        (ionChange)="changeRestType($event)"
+      >
+        <ion-select-option *ngFor="let type of restType" [value]="type.value"
+          >{{type.name}}</ion-select-option
+        >
+      </ion-select>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ngx-spinner
-  bdColor="rgba(0, 0, 0, 0.8)"
-  size="default"
-  color="var(--ion-color-primary)"
-  type="line-spin-clockwise-fade"
-  [fullScreen]="true"
-></ngx-spinner>
-  <div
-  class="header-details"
->
-  <span class="header-text" style="color: var(--PYellow)"
-    >{{ total_occupied }} OCCUPIED</span
-  >
-  <span class="header-text" style="color: var(--POrange)"
-    >{{ total_checkout }} CHECKOUT</span
-  >
-  <span class="header-text" style="color: var(--PRed)"
-    >{{ total_tables - total_occupied - total_checkout }} VACANT</span
-  >
-  <span class="header-text" style="color: var(--PBlue)"
-    >{{ total_tables }} TOTAL</span
-  >
-</div>
+    bdColor="rgba(0, 0, 0, 0.8)"
+    size="default"
+    color="var(--ion-color-primary)"
+    type="line-spin-clockwise-fade"
+    [fullScreen]="true"
+  ></ngx-spinner>
+  <div class="header-details">
+    <span class="header-text" style="color: var(--PYellow)"
+      >{{ total_occupied }} OCCUPIED</span
+    >
+    <span class="header-text" style="color: var(--POrange)"
+      >{{ total_checkout }} CHECKOUT</span
+    >
+    <span class="header-text" style="color: var(--PRed)"
+      >{{ total_tables - total_occupied - total_checkout }} VACANT</span
+    >
+    <span class="header-text" style="color: var(--PBlue)"
+      >{{ total_tables }} TOTAL</span
+    >
+  </div>
   <ion-row>
     <div class="tabe-wrapper">
-     <ion-card
-     
+      <ion-card
         *ngFor="let table of tableArray;let i = index"
         [id]="
         table.cid

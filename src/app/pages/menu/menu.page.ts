@@ -1,25 +1,30 @@
-import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnDestroy,
+} from '@angular/core';
 import {
   ModalController,
   ViewWillEnter,
   ToastController,
-} from "@ionic/angular";
-import { Animation, createAnimation } from "@ionic/core";
-import { OrderService } from "src/app/services/order.service";
+} from '@ionic/angular';
+import { Animation, createAnimation } from '@ionic/core';
+import { OrderService } from 'src/app/services/order.service';
 
-import { MenuoptionsComponent } from "src/app/components/menuoptions/menuoptions.component";
-import { AngularFirestoreCollection } from "@angular/fire/firestore";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DbService } from "src/app/services/db.service";
-import { AuthService } from "src/app/services/auth.service";
+import { MenuoptionsComponent } from 'src/app/components/menuoptions/menuoptions.component';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DbService } from 'src/app/services/db.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: "app-menu",
-  templateUrl: "./menu.page.html",
-  styleUrls: ["./menu.page.scss"],
+  selector: 'app-menu',
+  templateUrl: './menu.page.html',
+  styleUrls: ['./menu.page.scss'],
 })
-export class MenuPage implements ViewWillEnter, OnDestroy{
+export class MenuPage implements ViewWillEnter, OnDestroy {
   constructor(
     private modalController: ModalController,
     private orderService: OrderService,
@@ -35,37 +40,37 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     rootElement: HTMLElement
   ): Animation {
     return createAnimation()
-      .addElement(rootElement.querySelector(".modal-wrapper"))
+      .addElement(rootElement.querySelector('.modal-wrapper'))
       .duration(200)
-      .fromTo("transform", "translateY(100%)", "translateY(0)")
-      .fromTo("opacity", 1, 1);
+      .fromTo('transform', 'translateY(100%)', 'translateY(0)')
+      .fromTo('opacity', 1, 1);
   };
   animExit = function modalEnterAnimation(rootElement: HTMLElement): Animation {
     return createAnimation()
-      .addElement(rootElement.querySelector(".modal-wrapper"))
+      .addElement(rootElement.querySelector('.modal-wrapper'))
       .duration(200)
-      .fromTo("transform", "translateY(0)", "translateY(100%)")
-      .fromTo("opacity", 1, 1);
+      .fromTo('transform', 'translateY(0)', 'translateY(100%)')
+      .fromTo('opacity', 1, 1);
   };
   selectedItems: number = 0;
-  selectedTable
+  selectedTable;
   menuCards = [];
 
-  cardColors = ["#e4efe0", "#e4e3f1", "#dceaf3", "#f6dfd4", "#f3f3f3"];
+  cardColors = ['#e4efe0', '#e4e3f1', '#dceaf3', '#f6dfd4', '#f3f3f3'];
   orderItems = [];
   categories: any;
   category: any;
   mainMenu: any;
-  token = "";
-  drive_url = "https://drive.google.com/thumbnail?id=";
-  subscription: Subscription
+  token = '';
+  drive_url = 'https://drive.google.com/thumbnail?id=';
+  subscription: Subscription;
   async ionViewWillEnter() {
-    let table = localStorage.getItem('selectedTable')
-    if(table){
-      this.selectedTable = table
+    let table = localStorage.getItem('selectedTable');
+    if (table) {
+      this.selectedTable = table;
     }
-  this.subscription =  this.dbService.subsMenu.subscribe(async (res: any) => {
-      console.log("subsss", res);
+    this.subscription = this.dbService.subsMenu.subscribe(async (res: any) => {
+      console.log('subsss', res);
       if (res && res.id) {
         if (
           res.category == this.category &&
@@ -77,13 +82,13 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
         let toast = await this.toast.create({
           message:
             res.name +
-            (res.customize == -1 ? " is not available" : " is now available"),
+            (res.customize == -1 ? ' is not available' : ' is now available'),
           duration: 2000,
-          position: "top",
+          position: 'top',
         });
         await toast.present();
         this.orderItems.map(async (item, i) => {
-          if (this.category == "Special" || this.category == item.category) {
+          if (this.category == 'Special' || this.category == item.category) {
             let index = this.menuCards
               .map((ele) => {
                 return ele.id;
@@ -119,9 +124,9 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     }
 
     this.orderItems = await this.orderService.getOrderItems();
-    console.log("view will enter", this.orderItems);
+    console.log('view will enter', this.orderItems);
     this.orderItems.map((item) => {
-      if (this.category == "Special" || this.category == item.category) {
+      if (this.category == 'Special' || this.category == item.category) {
         let index = this.menuCards
           .map((ele) => {
             return ele.id;
@@ -143,7 +148,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     this.category = event.detail.value;
     await this.chooseMenucards();
     this.orderItems.map((item) => {
-      if (this.category == "Special" || this.category == item.category) {
+      if (this.category == 'Special' || this.category == item.category) {
         let index = this.menuCards
           .map((ele) => {
             return ele.id;
@@ -233,7 +238,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     const modalOptions = Object.assign({}, menu);
     let selectedItems: any;
     let orderitems: any, tempIndex: number;
-    if (type == "customize") {
+    if (type == 'customize') {
       orderitems = [...this.orderItems];
       tempIndex = orderitems.findIndex((i) => {
         return i.id == menu.id;
@@ -245,7 +250,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
 
     const modal = await this.modalController.create({
       component: MenuoptionsComponent,
-      cssClass: "food-options-container",
+      cssClass: 'food-options-container',
       animated: true,
       backdropDismiss: false,
       enterAnimation: this.animEnter,
@@ -262,7 +267,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
       this.orderService.setModelStatus(false);
       console.log(order.data);
       if (order.data.length != 0) {
-        if (type == "customize") {
+        if (type == 'customize') {
           orderitems[tempIndex].data = order.data;
           this.orderItems = orderitems;
           this.menuCards[index].customize = order.data.length;
@@ -280,7 +285,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
           JSON.parse(JSON.stringify(this.orderItems))
         );
       } else {
-        if (type == "customize") {
+        if (type == 'customize') {
           orderitems.splice(tempIndex, 1);
           this.orderItems = orderitems;
         }
@@ -289,7 +294,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy{
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 }

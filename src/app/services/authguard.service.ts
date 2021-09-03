@@ -1,19 +1,18 @@
-import { Injectable, OnInit } from "@angular/core";
-import { OrderService } from "./order.service";
+import { Injectable, OnInit } from '@angular/core';
+import { OrderService } from './order.service';
 import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
   ActivatedRoute,
-} from "@angular/router";
-import { Observable } from "rxjs";
-import { DbService } from "./db.service";
-import { ToastController } from "@ionic/angular";
-
+} from '@angular/router';
+import { Observable } from 'rxjs';
+import { DbService } from './db.service';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthguardService implements OnInit, CanActivate {
   constructor(
@@ -25,28 +24,27 @@ export class AuthguardService implements OnInit, CanActivate {
   ) {}
 
   ngOnInit() {
-    console.log("call auth");
+    console.log('call auth');
   }
 
   async canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-
-    let selectedTable =  localStorage.getItem('selectedTable')
-    if(!selectedTable){
+    let selectedTable = localStorage.getItem('selectedTable');
+    if (!selectedTable) {
       let toast = await this.toast.create({
         message: 'Please select table first',
-        duration: 3000,
-        position: "top",
+        duration: 4000,
+        position: 'top',
       });
       await toast.present();
-      this.router.navigate(["/tabs/table"]);
+      this.router.navigate(['/tabs/table']);
       return false;
     }
 
     let payload: any = await this.orderService.decryptToken();
-    console.log(payload)
+    console.log(payload);
     let isMobile =
       true; /* /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
       navigator.userAgent
@@ -60,12 +58,12 @@ export class AuthguardService implements OnInit, CanActivate {
         if (response) {
           resolve(true);
         } else {
-          this.router.navigate(["/not-found/Scan QR code properly"]);
+          this.router.navigate(['/not-found/Scan QR code properly']);
           resolve(false);
         }
       });
     } else {
-      this.router.navigate(["/not-found/Scan QR code properly"]);
+      this.router.navigate(['/not-found/Scan QR code properly']);
       return false;
     }
   }

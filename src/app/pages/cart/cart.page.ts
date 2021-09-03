@@ -1,18 +1,18 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   NavController,
   AlertController,
   ViewWillEnter,
   ToastController,
-} from "@ionic/angular";
-import { OrderService } from "src/app/services/order.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DbService } from "src/app/services/db.service";
-import { NgxSpinnerService } from "ngx-spinner";
+} from '@ionic/angular';
+import { OrderService } from 'src/app/services/order.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DbService } from 'src/app/services/db.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
-  selector: "app-cart",
-  templateUrl: "./cart.page.html",
-  styleUrls: ["./cart.page.scss"],
+  selector: 'app-cart',
+  templateUrl: './cart.page.html',
+  styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements ViewWillEnter {
   constructor(
@@ -29,15 +29,14 @@ export class CartPage implements ViewWillEnter {
   orderItem = [];
   totalPrice: number;
   totalQty: number;
-  token = "";
+  token = '';
   loading = false;
-  selectedTable
+  selectedTable;
 
-  
   async ionViewWillEnter() {
-    let table = localStorage.getItem('selectedTable')
-    if(table){
-      this.selectedTable = table
+    let table = localStorage.getItem('selectedTable');
+    if (table) {
+      this.selectedTable = table;
     }
 
     let order = await this.orderService.sendOrderToCart();
@@ -57,7 +56,7 @@ export class CartPage implements ViewWillEnter {
     let singlePrice = this.order[index].price / this.order[index].qty;
     this.totalQty++;
     this.order[index].qty++;
-    this.order[index].price += singlePrice
+    this.order[index].price += singlePrice;
     this.totalPrice = Math.round(this.totalPrice) + singlePrice;
     let id = this.order[index].id;
     let item = {
@@ -72,7 +71,7 @@ export class CartPage implements ViewWillEnter {
     });
     if (this.orderItem[i].customize == false) {
       this.orderItem[i].data[0].qty++;
-      this.orderItem[i].data[0].price += singlePrice
+      this.orderItem[i].data[0].price += singlePrice;
     } else {
       this.orderItem[i].data.push(item);
     }
@@ -103,7 +102,7 @@ export class CartPage implements ViewWillEnter {
         this.orderItem.splice(i, 1);
       } else {
         this.orderItem[i].data[0].qty--;
-        this.orderItem[i].data[0].price -= singlePrice
+        this.orderItem[i].data[0].price -= singlePrice;
       }
     } else {
       let j = this.orderItem[i].data.findIndex((el) => {
@@ -162,47 +161,51 @@ export class CartPage implements ViewWillEnter {
 
   async goToStatus() {
     const alert = await this.altCtrl.create({
-      cssClass: "alert-class",
-      header: "Confirm",
+      cssClass: 'alert-class',
+      header: 'Confirm',
       inputs: [
         {
-          placeholder: "Add Cooking Instrucion",
-          type: "text",
+          placeholder: 'Add Cooking Instrucion',
+          type: 'text',
         },
       ],
 
-      message: "Are you sure ?",
+      message: 'Are you sure ?',
       buttons: [
         {
-          text: "Cancel",
-          role: "cancel",
-          cssClass: "secondary",
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
           handler: (blah) => {
-            console.log("Confirm Cancel: blah");
+            console.log('Confirm Cancel: blah');
           },
         },
         {
-          text: "Place Order",
+          text: 'Place Order',
           handler: (ele) => {
             console.log(ele);
             let order = JSON.parse(
               JSON.stringify(
                 Object.assign(
-                  { taxable: this.totalPrice, qty: this.totalQty, inst: ele[0] || '' },
-                  { data: this.order },
+                  {
+                    taxable: this.totalPrice,
+                    qty: this.totalQty,
+                    inst: ele[0] || '',
+                  },
+                  { data: this.order }
                 )
               )
             );
             this.showLoader();
             this.orderService.placeOrder(order).subscribe(
-              async(res:any) => {
+              async (res: any) => {
                 this.hideLoader();
                 if (res.success) {
-                  this.orderService.setOrderItems([])
+                  this.orderService.setOrderItems([]);
                   let toast = await this.toast.create({
                     message: res.message,
-                    duration: 3000,
-                    position: "top",
+                    duration: 4000,
+                    position: 'top',
                   });
                   await toast.present();
                   this.router.navigate([`/tabs/table`]);
@@ -212,13 +215,13 @@ export class CartPage implements ViewWillEnter {
                 console.log(err);
                 this.hideLoader();
                 if (err.status == 401) {
-                  console.log(err.error.message)
+                  console.log(err.error.message);
                   this.router.navigate([`/not-found/${err.error.message}`]);
                 }
                 let toast = await this.toast.create({
                   message: err.error.message,
-                  duration: 3000,
-                  position: "top",
+                  duration: 4000,
+                  position: 'top',
                 });
                 await toast.present();
               }
@@ -230,14 +233,14 @@ export class CartPage implements ViewWillEnter {
     await alert.present();
   }
   hideLoader() {
-    this.orderService.hideTabs.next("unabled");
+    this.orderService.hideTabs.next('unabled');
     this.loading = false;
     this.spinner.hide();
   }
   showLoader() {
     this.loading = true;
     setTimeout(() => {
-      this.orderService.hideTabs.next("disabled");
+      this.orderService.hideTabs.next('disabled');
       if (this.loading) {
         this.spinner.show();
       }

@@ -10,7 +10,6 @@
       <span style="font-weight: 600; font-size: 18px"
         >{{ selectedTable ? ' Table - '+ selectedTable : '' }}</span
       >
-      
     </ion-title>
     <ion-button
       *ngIf="orderItems.length != 0"
@@ -112,8 +111,10 @@
                   ></span>
                 </span>
                 <span style="flex-grow: 8; color: white">{{ menu.name }}</span>
-                <span *ngIf="menu.disPrice" style="display:flex; flex-direction:column;  flex-wrap:wrap;">
-                  
+                <span
+                  *ngIf="menu.disPrice"
+                  style="display: flex; flex-direction: column; flex-wrap: wrap"
+                >
                   <span style="float: right; color: white"
                     >{{ menu.disPrice | currency: "&#8377;" }}</span
                   >
@@ -124,12 +125,10 @@
                       color: crimson;
                       text-decoration: line-through !important;
                       font-weight: bolder;
-                      
                     "
                     >{{ menu.price | currency: "&#8377;" }}</span
                   >
-                  </span
-                >
+                </span>
 
                 <span *ngIf="!menu.disPrice" style="float: right; color: white"
                   >{{ menu.price | currency: "&#8377;" }}</span
@@ -198,7 +197,7 @@
               >
                 <ion-icon
                   name="remove-outline"
-                  (click)="decrease(menu.id,menu.price,i)"
+                  (click)="decrease(menu.id,menu.disPrice || menu.price,i)"
                   style="margin: 4px 7px; flex-grow: 1"
                 ></ion-icon
                 ><span
@@ -207,7 +206,7 @@
                 >
                 <ion-icon
                   name="add-outline"
-                  (click)="increase(menu.id,menu.price,i)"
+                  (click)="increase(menu.id,menu.disPrice || menu.price,i)"
                   style="margin: 4px 7px; flex-grow: 1"
                 ></ion-icon>
               </ion-row>

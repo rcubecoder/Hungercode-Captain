@@ -1,15 +1,15 @@
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { AngularFirestore } from "@angular/fire/firestore";
-import { environment } from "src/environments/environment";
-import { Observable, Subject } from "rxjs";
-import { OrderService } from "./order.service";
-import { Router } from "@angular/router";
-import { AuthService } from "./auth.service";
-import { ToastController } from "@ionic/angular";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { environment } from 'src/environments/environment';
+import { Observable, Subject } from 'rxjs';
+import { OrderService } from './order.service';
+import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class DbService {
   constructor(
@@ -31,8 +31,9 @@ export class DbService {
   tables: number;
   subsMenu = new Subject();
   orderSubs = new Subject();
-  seatCustomers:any = [];
+  seatCustomers: any = [];
   seatCustomersSub = new Subject();
+  restType: any[] = [];
 
   async getMenuFromFirestore(id): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -42,16 +43,16 @@ export class DbService {
       this.categories = [];
       this.menu = [];
       this.resId = id;
-      await this.Firestore.collection("restaurants")
+      await this.Firestore.collection('restaurants')
         .doc(id)
-        .collection("categories")
+        .collection('categories')
         .snapshotChanges()
         .subscribe(async (res: any) => {
           res.map((a) => {
             this.categories = a.payload.doc.data().cat;
           });
           await this.Firestore.collection(`restaurants/${id}/menu`)
-            .doc("menu")
+            .doc('menu')
             .snapshotChanges()
             .subscribe((res: any) => {
               console.log(typeof res, res);
@@ -61,7 +62,7 @@ export class DbService {
               this.searchMenu = [];
               this.menu = [];
               this.categories = this.categories.filter((e) => {
-                return e.name != "Special";
+                return e.name != 'Special';
               });
               res?.menu?.map((a) => {
                 let data = a;
@@ -90,12 +91,12 @@ export class DbService {
                   this.menu[`${data.category}`].push(data);
                 }
                 if (data.special) {
-                  if (this.menu["Special"]) {
-                    this.menu["Special"].push(data);
+                  if (this.menu['Special']) {
+                    this.menu['Special'].push(data);
                   } else {
-                    this.menu["Special"] = [];
-                    this.categories.splice(0, 0, { name: "Special" });
-                    this.menu["Special"].push(data);
+                    this.menu['Special'] = [];
+                    this.categories.splice(0, 0, { name: 'Special' });
+                    this.menu['Special'].push(data);
                   }
                 }
               });
@@ -109,17 +110,46 @@ export class DbService {
     });
   }
 
-  getMenuFromDb() {
-    return this.http.get(this.url+'menu')
-  }
+  /*   getMenuFromDb() {
+    return this.http.get(this.url + 'menu');
+  } */
 
   getMenu(cat) {
     this.category = cat;
-    return JSON.parse(JSON.stringify(this.menu[`${cat}`] || []));
+    let menu = this.menu[`${cat}`]
+      ? JSON.parse(JSON.stringify(this.menu[`${cat}`]))
+      : [];
+    let type = localStorage.getItem('type');
+
+    if (type) {
+      for (let m of menu) {
+        m.variant = m.type[type].variant;
+        if (m.discount) {
+          m.disPrice = m.type[type].disPrice;
+        } else {
+          m.price = m.variant[type].price;
+        }
+      }
+    }
+    return menu;
   }
 
   getAllMenu() {
-    return JSON.parse(JSON.stringify(this.searchMenu || []));
+    let type = localStorage.getItem('type');
+    let menu = this.searchMenu
+      ? JSON.parse(JSON.stringify(this.searchMenu))
+      : [];
+    if (type) {
+      for (let m of menu) {
+        m.variant = m.type[type].variant;
+        if (m.discount) {
+          m.disPrice = m.type[type].disPrice;
+        } else {
+          m.price = m.variant[type].price;
+        }
+      }
+    }
+    return menu;
   }
 
   getCategory() {
@@ -135,48 +165,81 @@ export class DbService {
   }
 
   async getCustomers() {
-    if(this.seatCustomers.length == 0){
-    if (!this.resId) {
-    let token =  await this.orderService.decryptToken();
-    this.resId = token.rest_id;
-    }
-    this.Firestore
-      .collection(`restaurants/${this.resId}/customers`)
-      .valueChanges()
-      .subscribe((res: any) => {
-        console.log(res)
-        if (res[0]) {
-          this.seatCustomers=res[0]?.seat||[]
-          this.tables = Number(res[0].tables)
+    if (this.seatCustomers.length == 0) {
+      if (!this.resId) {
+        let token = await this.orderService.decryptToken();
+        this.resId = token.rest_id;
+      }
+      this.Firestore.collection(`restaurants/${this.resId}/customers`)
+        .valueChanges()
+        .subscribe(
+          (res: any) => {
+            console.log(res);
+            let restType = [];
+            if (res[0]) {
+              this.seatCustomers = res[0]?.seat || [];
 
-          let table = localStorage.getItem('selectedTable');
-
-          if(table){
-            let valid = false
-            for(let cust of this.seatCustomers){
-              if(cust.table == table){
-                valid = true
-                break
+              if (this.seatCustomers) {
+                this.seatCustomers = this.seatCustomers.filter(
+                  (e) => !e.restore
+                );
               }
-              if(!valid){
-                localStorage.removeItem('selectedTable');
+
+              restType = res[0].type || [];
+              this.tables = 0;
+              if (restType.length > 0) {
+                if (restType.length >= 2) {
+                  let type = localStorage.getItem('type');
+                  if (!type) {
+                    localStorage.setItem('type', restType[0].value);
+                  }
+                  this.restType = restType;
+                }
+                for (let t of restType) {
+                  this.tables += Number(t.tables);
+                }
+              } else {
+                this.restType = [];
+                this.tables = Number(res[0].tables);
+              }
+
+              let table = localStorage.getItem('selectedTable');
+
+              if (table) {
+                let valid = false;
+                for (let cust of this.seatCustomers) {
+                  if (cust.table == table) {
+                    valid = true;
+                    break;
+                  }
+                  if (!valid) {
+                    localStorage.removeItem('selectedTable');
+                  }
+                }
               }
             }
+            this.seatCustomersSub.next([
+              JSON.parse(JSON.stringify(this.seatCustomers)),
+              this.tables,
+              this.restType || [],
+            ]);
+            if (this.seatCustomers.length == 0) {
+              localStorage.removeItem('selectedTable');
+            }
+          },
+          (err) => {
+            if (err.status == 401) {
+              localStorage.removeItem('auth_token');
+              this.router.navigate(['/login']);
+            }
           }
-        }
-        this.seatCustomersSub.next([this.seatCustomers,this.tables])
-        if(this.seatCustomers.length == 0){
-          localStorage.removeItem('selectedTable')
-        }
-       
-      },err=>{
-        if(err.status == 401){
-          localStorage.removeItem('auth_token')
-          this.router.navigate(['/login'])
-        }
-      });
-    }else{
-      this.seatCustomersSub.next([this.seatCustomers, this.tables])
+        );
+    } else {
+      this.seatCustomersSub.next([
+        JSON.parse(JSON.stringify(this.seatCustomers)),
+        this.tables,
+        this.restType || [],
+      ]);
     }
   }
 

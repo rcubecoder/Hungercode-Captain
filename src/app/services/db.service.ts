@@ -127,7 +127,7 @@ export class DbService {
         if (m.discount) {
           m.disPrice = m.type[type].disPrice;
         } else {
-          m.price = m.variant[type].price;
+          m.price = m.type[type].price;
         }
       }
     }
@@ -145,7 +145,7 @@ export class DbService {
         if (m.discount) {
           m.disPrice = m.type[type].disPrice;
         } else {
-          m.price = m.variant[type].price;
+          m.price = m.type[type].price;
         }
       }
     }

@@ -38,7 +38,7 @@ export class OrderService {
     let table_no = localStorage.getItem('selectedTable');
     let type = localStorage.getItem('type');
     return this.http.post(
-      this.url + 'order/add-order/' + table_no + type ? '/' + type : '',
+      this.url + 'order/add-order/' + table_no + (type ? '/' + type : ''),
       order
     );
   }

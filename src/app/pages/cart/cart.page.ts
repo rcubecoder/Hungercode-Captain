@@ -32,13 +32,13 @@ export class CartPage implements ViewWillEnter {
   token = '';
   loading = false;
   selectedTable;
+  type;
 
   async ionViewWillEnter() {
     let table = localStorage.getItem('selectedTable');
-    if (table) {
-      this.selectedTable = table;
-    }
-
+    let type = localStorage.getItem('type');
+    this.selectedTable = table ? table : '';
+    this.type = type ? type : '';
     let order = await this.orderService.sendOrderToCart();
 
     this.order = order[0];

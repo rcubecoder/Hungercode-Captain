@@ -100,6 +100,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
     let type = event.detail.value;
     this.currentRestType = type;
     localStorage.setItem('type', type);
+    localStorage.removeItem('selectedTable');
     this.currentCustomers = this.customers.filter((e) => e.type == type);
     let index = this.restType
       .map((e) => {
@@ -224,6 +225,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       return;
     } else {
       localStorage.setItem('selectedTable', table.table_no);
+      this.orderService.setOrderItems([]);
       this.router.navigate(['/tabs/menu']);
       this.selectedTable = table;
     }

@@ -55,6 +55,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
   selectedItems: number = 0;
   selectedTable;
   menuCards = [];
+  type;
 
   cardColors = ['#e4efe0', '#e4e3f1', '#dceaf3', '#f6dfd4', '#f3f3f3'];
   orderItems = [];
@@ -66,9 +67,9 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
   subscription: Subscription;
   async ionViewWillEnter() {
     let table = localStorage.getItem('selectedTable');
-    if (table) {
-      this.selectedTable = table;
-    }
+    let type = localStorage.getItem('type');
+    this.selectedTable = table ? table : '';
+    this.type = type ? type : '';
     this.subscription = this.dbService.subsMenu.subscribe(async (res: any) => {
       console.log('subsss', res);
       if (res && res.id) {

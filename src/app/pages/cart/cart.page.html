@@ -15,12 +15,13 @@
 
       <ion-title style="font-size: 18px">
         <span style="font-weight: 600; font-size: 18px"
-          >{{ selectedTable ? ' Table - '+ selectedTable : '' }}</span
+          >{{ type ? type.toUpperCase()+ ' '+ selectedTable : ' Table - '+
+          selectedTable}}</span
         >
-        
       </ion-title>
 
-      <span *ngIf="order.length > 0"
+      <span
+        *ngIf="order.length > 0"
         style="
           display: inline-block;
           width: 90%;
@@ -35,10 +36,9 @@
 </ion-header>
 <ion-content *ngIf="order.length ==0">
   <div class="image">
-    <img src="assets/images/empty.svg"/>
+    <img src="assets/images/empty.svg" />
     <p>Your Cart is Empty!</p>
   </div>
-  
 </ion-content>
 <ion-content *ngIf="order.length > 0">
   <ngx-spinner
@@ -61,20 +61,17 @@
         <div class="inside-container">
           <ion-row class="ion-no-padding" style="width: 100%">
             <ion-col class="ion-no-padding" style="text-align: left"
-              >{{ item.name
-              }}<ion-chip *ngIf="item.variant?.name"
+              >{{ item.name }}<ion-chip *ngIf="item.variant?.name"
                 ><ion-label>{{ item.variant.name }}</ion-label></ion-chip
               >
             </ion-col>
-            <ion-col class="ion-no-padding" style="text-align: right">{{
-              item.price | currency: "&#8377;"
-            }}</ion-col>
+            <ion-col class="ion-no-padding" style="text-align: right"
+              >{{ item.price | currency: "&#8377;" }}</ion-col
+            >
           </ion-row>
           <ion-row style="font-size: 8px; flex-grow: 8">
             <ion-col class="ion-no-padding" size="12">
-              <div *ngFor="let addon of item.addon">
-                {{ addon }}
-              </div></ion-col
+              <div *ngFor="let addon of item.addon">{{ addon }}</div></ion-col
             >
           </ion-row>
           <ion-row class="plus-minus-button ion-no-padding">
@@ -103,10 +100,13 @@
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
-  
 </ion-content>
 
-
-<ion-button  *ngIf="order.length > 0" class="ordernow" (click)="goToStatus()" expand="full">
+<ion-button
+  *ngIf="order.length > 0"
+  class="ordernow"
+  (click)="goToStatus()"
+  expand="full"
+>
   Order Now
 </ion-button>

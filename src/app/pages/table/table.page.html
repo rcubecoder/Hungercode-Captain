@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header mode="md">
   <ion-toolbar>
     <div class="title">
       <span>Table</span>
@@ -40,6 +40,7 @@
   <ion-row>
     <div class="tabe-wrapper">
       <ion-card
+      mode="md"
         *ngFor="let table of tableArray;let i = index"
         [id]="
         table.cid

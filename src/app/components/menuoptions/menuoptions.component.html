@@ -1,22 +1,25 @@
-<ion-header style="text-align: center;" class="ion-no-border">
-  <ion-button
+<ion-header style="text-align: center" class="ion-no-border" mode="md">
+  <div
     class="ion-no-padding close-modal"
-    fill="clear"
+    style="display: flex; flex-direction: column;justify-content: center;align-items: center; height: 40px"
     (click)="closeOptions()"
-    ><ion-icon color="dark" name="chevron-down-outline"></ion-icon
-  ></ion-button>
+  >
+    <ion-icon color="dark" name="chevron-down-outline"></ion-icon
+    ><span style="color: red">Save</span>
+  </div>
 </ion-header>
 
-<ion-content style="height: 90%;">
+<ion-content style="height: 90%">
   <div class="modal-header">
     {{ modalOptions.name }}
-    <span style="float: right;">{{ totalPrice | currency: "&#8377;" }}</span>
+    <span style="float: right">{{ totalPrice | currency: "&#8377;" }}</span>
   </div>
   <ion-slides
     [options]="sliderConfig"
     #ionslide
     class="ion-no-padding"
-    style="height: 80%; padding: 6% 12%;"
+    style="height: 80%; padding: 6% 12%"
+    mode="md"
   >
     <ion-slide
       *ngFor="let item of list; let i = index"
@@ -24,15 +27,15 @@
       class="slide-box-add"
     >
       <div class="single-options-card">
-        <div style="text-align: right; padding: 8px;">
+        <div style="text-align: right; padding: 8px">
           <span
             (click)="removeItem(i)"
-            style="color: red; font-size: 16px; margin-right: 8px;"
+            style="color: red; font-size: 16px; margin-right: 8px"
             >Remove</span
           >
         </div>
-      <div class="food-type" *ngIf="modalOptions.variant != undefined">
-          <ion-radio-group [id]="'radio' + i">
+        <div class="food-type" *ngIf="modalOptions.variant != undefined">
+          <ion-radio-group mode="md" [id]="'radio' + i">
             <ion-row
               *ngFor="let variant of modalOptions.variant"
               class="ion-no-padding radio-food-type"
@@ -42,13 +45,13 @@
                 [value]="variant.name"
               ></ion-radio>
               <ion-label>{{ variant.name }}</ion-label>
-              <span style="flex-grow: 6; text-align: right;">{{
+              <span style="flex-grow: 6; text-align: right">{{
                 variant.price | currency: "&#8377;"
               }}</span>
             </ion-row>
           </ion-radio-group>
-        </div> 
-        <div style="padding: 20px 20px;">
+        </div>
+        <div style="padding: 20px 20px">
           <div
             *ngFor="let addon of modalOptions.addon; let in = index"
             class="addon-checkbox-container"
@@ -56,12 +59,13 @@
             <ion-checkbox
               color="primary"
               (click)="addAddon(i, addon.price, addon.name, $event)"
-              style="margin-right: 5px;"
+              style="margin-right: 5px"
               [id]="'addon' + i + '_' + in"
               checked="false"
+              mode="md"
             ></ion-checkbox>
             <ion-label>{{ addon.name }}</ion-label>
-            <span style="flex-grow: 6; text-align: right;">{{
+            <span style="flex-grow: 6; text-align: right">{{
               addon.price | currency: "&#8377;"
             }}</span>
           </div>
@@ -72,15 +76,13 @@
   <div class="increase-quantity">
     <span
       (click)="removeAllItem()"
-      style="flex-grow: 3; text-align: left; margin-left: 10px; color: red;"
-      >Remove all</span
+      style="flex-grow: 3; text-align: left; margin-left: 10px; color: red"
+      >Remove All</span
     >
-    <span style="text-align: center; flex-grow: 3;">
-      {{ totalItem }}
-    </span>
+    <span style="text-align: center; flex-grow: 3"> Qty {{ totalItem }} </span>
     <span
       (click)="addNewItem()"
-      style="flex-grow: 3; text-align: right; margin-right: 10px;"
+      style="flex-grow: 3; text-align: right; margin-right: 10px"
       >Add +
     </span>
   </div>

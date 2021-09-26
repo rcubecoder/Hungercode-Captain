@@ -104,7 +104,8 @@ export class SearchPage implements ViewWillEnter {
     }
   }
 
-  increase(id, price, index) {
+  increase(id, price, index, e) {
+    e.stopPropagation();
     let i = this.orderItems.findIndex((item) => {
       return item.id == id;
     });
@@ -118,7 +119,8 @@ export class SearchPage implements ViewWillEnter {
     );
   }
 
-  decrease(id, price, index) {
+  decrease(id, price, index, e) {
+    e.stopPropagation();
     let i = this.orderItems.findIndex((item) => {
       return item.id == id;
     });
@@ -136,18 +138,23 @@ export class SearchPage implements ViewWillEnter {
     );
   }
 
-  removeOrderItem(id, cat, index) {
+  removeOrderItem(id, cat, index, e) {
+    e.stopPropagation();
     this.orderItems = this.orderService.removeOrderItem(cat, id);
     this.tempMenuCards[index].customize = 0;
   }
 
   menuOptionMenu: any;
-  async openOptions(menu, index, type) {
+  async openOptions(menu, index, type, e) {
+    e.stopPropagation();
     this.menuOptionMenu = menu;
     if (menu.disPrice) {
       this.menuOptionMenu.price = menu.disPrice;
     }
     if (menu.addon?.length == 0 && menu.variant?.length == 0) {
+      if (this.menuCards[index].customize != 0) {
+        return;
+      }
       this.tempMenuCards[index].customize++;
       let item = {
         name: menu.name,
@@ -198,7 +205,9 @@ export class SearchPage implements ViewWillEnter {
     await modal.onDidDismiss().then((order) => {
       this.menuOptionMenu = {};
       this.orderService.setModelStatus(false);
-      console.log(order.data);
+      if (!order.data) {
+        return;
+      }
       if (order.data.length != 0) {
         if (type == 'customize') {
           orderitems[tempIndex].data = order.data;

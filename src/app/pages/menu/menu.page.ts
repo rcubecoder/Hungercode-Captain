@@ -172,7 +172,8 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     }
   }
 
-  increase(id, price, index) {
+  increase(id, price, index, e) {
+    e.stopPropagation();
     let i = this.orderItems.findIndex((item) => {
       return item.id == id;
     });
@@ -186,7 +187,8 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     );
   }
 
-  decrease(id, price, index) {
+  decrease(id, price, index, e) {
+    e.stopPropagation();
     let i = this.orderItems.findIndex((item) => {
       return item.id == id;
     });
@@ -204,18 +206,23 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     );
   }
 
-  removeOrderItem(id, index) {
+  removeOrderItem(id, index, e) {
+    e.stopPropagation();
     this.orderItems = this.orderService.removeOrderItem(this.category, id);
     this.menuCards[index].customize = 0;
   }
 
   menuOptionMenu: any;
-  async openOptions(menu, index, type) {
+  async openOptions(menu, index, type, e) {
+    e.stopPropagation();
     this.menuOptionMenu = menu;
     if (menu.disPrice) {
       this.menuOptionMenu.price = menu.disPrice;
     }
     if (menu.addon?.length == 0 && menu.variant?.length == 0) {
+      if(this.menuCards[index].cusomize != 0){
+        return
+      }
       this.menuCards[index].customize++;
       let item = {
         name: menu.name,
@@ -266,7 +273,9 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     await modal.onDidDismiss().then((order) => {
       this.menuOptionMenu = {};
       this.orderService.setModelStatus(false);
-      console.log(order.data);
+      if(!order.data){
+        return
+      }
       if (order.data.length != 0) {
         if (type == 'customize') {
           orderitems[tempIndex].data = order.data;

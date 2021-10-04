@@ -115,7 +115,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     this.categories = await this.dbService.getCategories();
     let cat = await this.dbService.getCategory();
     if (!cat) {
-      cat = this.categories[0].name;
+      cat = this.categories[0];
     }
     if (this.category == cat) {
       await this.chooseMenucards();

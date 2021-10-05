@@ -24,7 +24,7 @@
     [value]="category"
     mode="md"
   >
-    <ion-segment-button *ngFor="let cat of categories" [value]="cat.name">
+    <ion-segment-button *ngFor="let cat of categories" [value]="cat">
       <ion-label>{{ cat }}</ion-label>
     </ion-segment-button>
   </ion-segment>

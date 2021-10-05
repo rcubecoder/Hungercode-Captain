@@ -63,7 +63,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
   category: any;
   mainMenu: any;
   token = '';
-  drive_url = 'https://drive.google.com/thumbnail?id=';
+  drive_url = 'https://drive.google.com/uc?id=';
   subscription: Subscription;
   async ionViewWillEnter() {
     let table = localStorage.getItem('selectedTable');

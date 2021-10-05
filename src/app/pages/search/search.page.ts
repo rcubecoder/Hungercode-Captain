@@ -38,7 +38,7 @@ export class SearchPage implements ViewWillEnter {
   tempMenuCards: any = [];
   pushSearch = [];
   cardColors = ['#e4efe0', '#e4e3f1', '#dceaf3', '#f6dfd4', '#f3f3f3'];
-  drive_url = 'https://drive.google.com/thumbnail?id=';
+  drive_url = 'https://drive.google.com/uc?id=';
   orderItems: any = [];
   async ionViewWillEnter() {
     let searchMenu = this.dbService.getAllMenu();

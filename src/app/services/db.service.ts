@@ -70,7 +70,7 @@ export class DbService {
                 this.menu['Special'].push(data);
               } else {
                 this.menu['Special'] = [];
-                this.categories.splice(0, 0, { name: 'Special' });
+                this.categories.splice(0, 0, 'Special');
                 this.menu['Special'].push(data);
               }
             }

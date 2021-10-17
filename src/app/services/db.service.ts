@@ -46,7 +46,7 @@ export class DbService {
 
       await this.Firestore.collection(`restaurants/${id}/menu`)
         .doc('menu')
-        .snapshotChanges()
+        .get()
         .subscribe((res: any) => {
           let menu = res.data().menu || [];
           this.categories = res.data().cat || [];

@@ -70,47 +70,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     let type = localStorage.getItem('type');
     this.selectedTable = table ? table : '';
     this.type = type ? type : '';
-    this.subscription = this.dbService.subsMenu.subscribe(async (res: any) => {
-      console.log('subsss', res);
-      if (res && res.id) {
-        if (
-          res.category == this.category &&
-          res.name == this.menuOptionMenu?.name
-        ) {
-          await this.modalController.dismiss([]);
-        }
-        this.chooseMenucards();
-        let toast = await this.toast.create({
-          message:
-            res.name +
-            (res.customize == -1 ? ' is not available' : ' is now available'),
-          duration: 2000,
-          position: 'top',
-        });
-        await toast.present();
-        this.orderItems.map(async (item, i) => {
-          if (this.category == 'Special' || this.category == item.category) {
-            let index = this.menuCards
-              .map((ele) => {
-                return ele.id;
-              })
-              .indexOf(item.id);
 
-            if (item.id == res.id) {
-              this.menuCards[index].customize = res.customize;
-              await this.orderService.spliceOrderItems(i);
-            } else {
-              if (item.customize == false) {
-                this.menuCards[index].customize = item.data[0].qty;
-              } else {
-                this.menuCards[index].customize = item.data.length;
-              }
-            }
-          }
-          this.orderItems = this.orderService.getOrderItems();
-        });
-      }
-    });
 
     this.categories = await this.dbService.getCategories();
     let cat = await this.dbService.getCategory();

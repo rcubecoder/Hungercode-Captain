@@ -43,69 +43,39 @@ export class DbService {
       this.categories = [];
       this.menu = [];
       this.resId = id;
-      await this.Firestore.collection('restaurants')
-        .doc(id)
-        .collection('categories')
-        .snapshotChanges()
-        .subscribe(async (res: any) => {
-          res.map((a) => {
-            this.categories = a.payload.doc.data().cat;
+
+      await this.Firestore.collection(`restaurants/${id}/menu`)
+        .doc('menu')
+        .get()
+        .subscribe((res: any) => {
+          let menu = res.data().menu || [];
+          this.categories = res.data().cat || [];
+          this.searchMenu = [];
+          this.menu = [];
+          this.categories = this.categories.filter((e) => {
+            return e.name != 'Special';
           });
-          await this.Firestore.collection(`restaurants/${id}/menu`)
-            .doc('menu')
-            .snapshotChanges()
-            .subscribe((res: any) => {
-              console.log(typeof res, res);
-              res = res.payload.data();
-              let subs: any = {};
-              let menu: any = { ...this.menu };
-              this.searchMenu = [];
-              this.menu = [];
-              this.categories = this.categories.filter((e) => {
-                return e.name != 'Special';
-              });
-              res?.menu?.map((a) => {
-                let data = a;
+          menu?.map((a) => {
+            let data = a;
+            this.searchMenu.push(a);
 
-                this.searchMenu.push(a);
-
-                let item = menu[`${data.category}`]?.find(
-                  (ele) => ele.id == data.id
-                );
-
-                if (item) {
-                  if (item.customize != data.customize) {
-                    subs = {
-                      category: data.category,
-                      name: data.name,
-                      id: data.id,
-                      customize: data.customize,
-                    };
-                  }
-                }
-
-                if (this.menu[`${data.category}`]) {
-                  this.menu[`${data.category}`].push(data);
-                } else {
-                  this.menu[`${data.category}`] = [];
-                  this.menu[`${data.category}`].push(data);
-                }
-                if (data.special) {
-                  if (this.menu['Special']) {
-                    this.menu['Special'].push(data);
-                  } else {
-                    this.menu['Special'] = [];
-                    this.categories.splice(0, 0, { name: 'Special' });
-                    this.menu['Special'].push(data);
-                  }
-                }
-              });
-
-              if (subs && subs.id) {
-                this.subsMenu.next(subs);
+            if (this.menu[`${data.category}`]) {
+              this.menu[`${data.category}`].push(data);
+            } else {
+              this.menu[`${data.category}`] = [];
+              this.menu[`${data.category}`].push(data);
+            }
+            if (data.special) {
+              if (this.menu['Special']) {
+                this.menu['Special'].push(data);
+              } else {
+                this.menu['Special'] = [];
+                this.categories.splice(0, 0, 'Special');
+                this.menu['Special'].push(data);
               }
-              resolve(true);
-            });
+            }
+          });
+          resolve(true);
         });
     });
   }

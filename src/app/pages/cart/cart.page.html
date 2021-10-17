@@ -1,4 +1,4 @@
-<ion-header class="ion-no-padding">
+<ion-header mode="md" class="ion-no-padding">
   <ion-toolbar>
     <div style="display: flex; align-items: center; height: 100%">
       <ion-button
@@ -52,20 +52,22 @@
     class="ion-no-padding"
     style="width: 100%; padding-bottom: 50px"
     lines="none"
+    mode="md"
   >
     <ion-item-sliding
       *ngFor="let item of order; let i = index"
       [ngStyle]="{ '--animation-order': i }"
+      mode="md"
     >
       <ion-item color="light">
         <div class="inside-container">
           <ion-row class="ion-no-padding" style="width: 100%">
-            <ion-col class="ion-no-padding" style="text-align: left"
+            <ion-col size="9" class="ion-no-padding" style="text-align: left"
               >{{ item.name }}<ion-chip *ngIf="item.variant?.name"
                 ><ion-label>{{ item.variant.name }}</ion-label></ion-chip
               >
             </ion-col>
-            <ion-col class="ion-no-padding" style="text-align: right"
+            <ion-col size="3" class="ion-no-padding" style="text-align: right"
               >{{ item.price | currency: "&#8377;" }}</ion-col
             >
           </ion-row>

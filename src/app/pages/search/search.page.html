@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header mode="md">
   <ion-toolbar>
     <ion-searchbar
       inputmode="text"
@@ -9,10 +9,9 @@
 </ion-header>
 
 <ion-content *ngIf="tempMenuCards.length == 0">
-   <div class="image">
-       <img src="assets/images/search.svg"/>
-
-   </div>
+  <div class="image">
+    <img src="assets/images/search.svg" />
+  </div>
 </ion-content>
 <ion-content *ngIf="tempMenuCards.length > 0">
   <ion-grid>
@@ -25,8 +24,10 @@
         size-lg="3"
       >
         <ion-card
+          mode="md"
           style="padding: 0px"
           [ngStyle]="{ 'background-image': 'url('+drive_url+menu.img_url+')' }"
+          (click)="menu.customize != -1 && openOptions(menu, i, menu.customize == 0 ? 'add' : 'customize', $event)"
         >
           <ion-card-header
             style="
@@ -132,7 +133,7 @@
                 fill="solid"
                 color="light"
                 style="--margin-start: 0; --margin-end: 0"
-                (click)="openOptions(menu, i, 'add')"
+                (click)="openOptions(menu, i, 'add', $event)"
                 >ADD
               </ion-button>
             </div>
@@ -154,12 +155,12 @@
                 fill="solid"
                 color="light"
                 style="--margin-start: 0; --margin-end: 0; width: 80%"
-                (click)="openOptions(menu, i, 'customize')"
+                (click)="openOptions(menu, i, 'customize', $event)"
                 class="add-button"
                 >CUSTOMIZE</ion-button
               >
               <ion-icon
-                (click)="removeOrderItem(menu.id,menu.category, i)"
+                (click)="removeOrderItem(menu.id,menu.category, i, $event)"
                 color="danger"
                 style="width: 20%"
                 name="trash-outline"
@@ -179,7 +180,7 @@
               >
                 <ion-icon
                   name="remove-outline"
-                  (click)="decrease(menu.id,menu.price,i)"
+                  (click)="decrease(menu.id,menu.price,i, $event)"
                   style="margin: 4px 7px; flex-grow: 1"
                 ></ion-icon
                 ><span
@@ -188,7 +189,7 @@
                 >
                 <ion-icon
                   name="add-outline"
-                  (click)="increase(menu.id,menu.price,i)"
+                  (click)="increase(menu.id,menu.price,i, $event)"
                   style="margin: 4px 7px; flex-grow: 1"
                 ></ion-icon>
               </ion-row>

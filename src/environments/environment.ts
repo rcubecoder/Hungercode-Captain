@@ -12,6 +12,6 @@ export const environment = {
     appId: '1:122401619157:web:e99258dce12873fd27765c',
     measurementId: 'G-2J5TEVD94B',
   },
-  qr_secret: 'THIs Is my SeCrEt',
-  enc_secret: 'gstf78ijagf9hf09',
+  QR_SECRET: 'THIs Is my SeCrEt',
+  ENC_SECRET: 'gstf78ijagf9hf09',
 };

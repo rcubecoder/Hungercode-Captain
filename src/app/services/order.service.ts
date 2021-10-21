@@ -134,7 +134,7 @@ export class OrderService {
         const decoded = helper.decodeToken(token);
         let decrypt = await crypto.AES.decrypt(
           decoded.token,
-          environment.enc_secret
+          environment.ENC_SECRET
         );
         let decryptData = await JSON.parse(decrypt.toString(crypto.enc.Utf8));
 

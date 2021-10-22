@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return !!localStorage.getItem('firestep_auth_token');
+    return !!localStorage.getItem('hungercodes_auth_token');
   }
 
   forgotPassSendCode(data) {

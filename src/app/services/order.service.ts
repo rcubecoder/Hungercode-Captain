@@ -45,7 +45,7 @@ export class OrderService {
 
   getOrderItems() {
     if (this.orderItems.length) {
-      console.log('order items in service........', this.orderItems);
+  
       return JSON.parse(JSON.stringify(this.orderItems));
     }
     return [];
@@ -53,7 +53,7 @@ export class OrderService {
 
   async sendOrderToCart() {
     let order: any[] = JSON.parse(JSON.stringify(this.orderItems));
-    console.log('send order to cart', order);
+  
     let newOrderItems = [];
     let orderItems: any[];
 
@@ -88,7 +88,7 @@ export class OrderService {
           );
         }
       }
-      console.log('newOrder', newOrderItems);
+      
     });
     return [
       newOrderItems,
@@ -109,7 +109,7 @@ export class OrderService {
     let i = orderitems.findIndex((i) => {
       return i.id == id;
     });
-    console.log(orderitems, i);
+    
     orderitems.splice(i, 1);
     this.orderItems = orderitems;
     return this.orderItems.slice();
@@ -126,7 +126,7 @@ export class OrderService {
   async decryptToken(token?): Promise<any> {
     if (!token) {
       token = localStorage.getItem('auth_token');
-      console.log(token);
+      
     }
     return new Promise(async (resolve, reject) => {
       const helper = new JwtHelperService();

@@ -114,7 +114,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   }
 
   setTable() {
-    console.log('cust in settable', this.customers, this.total_tables);
+  
     this.tableArray = [];
     this.total_occupied = 0;
     this.total_checkout = 0;
@@ -148,7 +148,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       }
     }
 
-    console.log(this.tableArray);
+    
   }
 
   async selectTable(table) {
@@ -170,7 +170,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
             role: 'cancel',
             cssClass: 'secondary',
             handler: (blah) => {
-              console.log('Confirm Cancel: blah');
+             
             },
           },
           {
@@ -179,7 +179,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
               if (!ele[0]) {
                 return;
               }
-              console.log(ele);
+            
               this.showLoader();
               this.auth
                 .verifySession({
@@ -189,14 +189,14 @@ export class TablePage implements ViewWillEnter, OnDestroy {
                 .subscribe(
                   (res: any) => {
                     this.hideLoader();
-                    console.log(res);
+              
                     if (res.success) {
                       localStorage.setItem('selectedTable', table.table_no);
                       this.router.navigate([`/tabs/menu`]);
                     }
                   },
                   async (err) => {
-                    console.log(err);
+               
                     this.hideLoader();
                     if (err.status == 401) {
                       console.log(err.error.message);

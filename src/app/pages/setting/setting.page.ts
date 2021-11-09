@@ -38,7 +38,7 @@ export class SettingPage implements ViewWillEnter, OnDestroy {
           role: "cancel",
           cssClass: "secondary",
           handler: (blah) => {
-            console.log("Confirm Cancel: blah");
+           
           },
         },
         {
@@ -46,7 +46,7 @@ export class SettingPage implements ViewWillEnter, OnDestroy {
           handler: (ele) => {
             localStorage.removeItem("auth_token");
             this.router.navigate(["/login"]);
-            console.log(ele);
+           
             
                 
               }

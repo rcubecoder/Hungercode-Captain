@@ -85,7 +85,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     }
 
     this.orderItems = await this.orderService.getOrderItems();
-    console.log('view will enter', this.orderItems);
+
     this.orderItems.map((item) => {
       if (this.category == 'Special' || this.category == item.category) {
         let index = this.menuCards
@@ -248,7 +248,7 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
             data: order.data,
             customize: true,
           });
-          console.log(this.orderItems);
+        
           this.menuCards[index].customize = order.data.length;
         }
         this.orderService.setOrderItems(

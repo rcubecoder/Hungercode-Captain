@@ -24,7 +24,7 @@ export class AuthguardService implements OnInit, CanActivate {
   ) {}
 
   ngOnInit() {
-    console.log('call auth');
+
   }
 
   async canActivate(
@@ -44,11 +44,11 @@ export class AuthguardService implements OnInit, CanActivate {
     }
 
     let payload: any = await this.orderService.decryptToken();
-    console.log(payload);
+
     let isMobile =
-      true; /* /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
+       /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
       navigator.userAgent
-    );*/
+    );
 
     if (payload.rest_id && isMobile) {
       return new Promise(async (resolve, reject) => {

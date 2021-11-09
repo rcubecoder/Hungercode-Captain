@@ -10,6 +10,6 @@ export const environment = {
     appId: "1:203111536056:web:3745cf373696133a7cab4d",
     measurementId: "G-RRV4BZZC6C"
   },
-  QR_SECRET: 'onuqDHMuM44CyL6DhJuj',
+  QR_SECRET: 'zx7xTqdyX1OmnrPsO30T1iQfwAO5ORM3',
   ENC_SECRET: 'Y8WzSv8FP9wL8QCXOwwp',
 };

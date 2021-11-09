@@ -148,7 +148,7 @@ export class DbService {
         .valueChanges()
         .subscribe(
           (res: any) => {
-            console.log(res);
+           
             let restType = [];
             if (res[0]) {
               this.seatCustomers = res[0]?.seat || [];

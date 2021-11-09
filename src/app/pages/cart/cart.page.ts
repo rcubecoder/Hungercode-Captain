@@ -177,13 +177,13 @@ export class CartPage implements ViewWillEnter {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+      
           },
         },
         {
           text: 'Place Order',
           handler: (ele) => {
-            console.log(ele);
+         
             let order = JSON.parse(
               JSON.stringify(
                 Object.assign(
@@ -212,7 +212,7 @@ export class CartPage implements ViewWillEnter {
                 }
               },
               async (err) => {
-                console.log(err);
+            
                 this.hideLoader();
                 if (err.status == 401) {
                   console.log(err.error.message);

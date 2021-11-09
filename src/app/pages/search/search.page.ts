@@ -220,7 +220,7 @@ export class SearchPage implements ViewWillEnter {
             data: order.data,
             customize: true,
           });
-          console.log(this.orderItems);
+
           this.tempMenuCards[index].customize = order.data.length;
         }
         this.orderService.setOrderItems(

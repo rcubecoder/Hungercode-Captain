@@ -32,7 +32,7 @@ export class ForgotPasswordComponent implements ViewWillEnter {
   onSubmit() {
     this.authService.forgotPassSendCode(this.model).subscribe(
       async(res: any) => {
-        console.log(res)
+   
         if (res.success) {
           this.isVerificationCode = true
           let model = await this.tostCtrl.create({

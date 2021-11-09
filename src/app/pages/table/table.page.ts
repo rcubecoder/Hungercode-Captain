@@ -161,6 +161,14 @@ export class TablePage implements ViewWillEnter, OnDestroy {
             placeholder: 'Enter Customer Name',
             type: 'text',
           },
+          {
+            placeholder: 'Enter Customer Number',
+            type: 'text',
+          },
+          {
+            placeholder: 'Enter Number of Person',
+            type: 'text',
+          },
         ],
 
         message: 'Add customer to the table',
@@ -183,7 +191,9 @@ export class TablePage implements ViewWillEnter, OnDestroy {
               this.showLoader();
               this.auth
                 .verifySession({
-                  cname: ele[0],
+                  name: ele[0],
+                  mobile_no: ele[1],
+                  members: ele[2],
                   table: table.table_no.toString(),
                 })
                 .subscribe(

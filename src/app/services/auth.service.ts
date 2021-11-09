@@ -56,4 +56,9 @@ export class AuthService {
     }
     return this.http.post(this.url + 'auth/verify-session', data);
   }
+
+  
+  verifyMobileNo(data) {
+    return this.http.post(this.url + 'auth/verify-mobile-no', data);
+  }
 }

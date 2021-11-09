@@ -38,6 +38,7 @@ ion-button {
   --margin-end: 0 !important;
   --box-shadow: 3px 3px 5px var(--ion-box-shadow-light);
   --ripple-color: transparent;
+  z-index: 10000;
 }
 ion-icon {
   font-size: 24px;

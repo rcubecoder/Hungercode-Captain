@@ -1,21 +1,20 @@
-
 <ion-tabs mode="md">
   <ion-tab-bar slot="bottom">
+    <ion-tab-button [disabled]="tabsOn" tab="table">
+      <ion-icon name="id-card"></ion-icon>
+      <ion-label>Table</ion-label>
+    </ion-tab-button>
     <ion-tab-button [disabled]="tabsOn" tab="menu">
       <ion-icon name="reader"></ion-icon>
       <ion-label>Menu</ion-label>
-    </ion-tab-button>
-    <ion-tab-button [disabled]="tabsOn" tab="cart">
-      <ion-icon name="cart"></ion-icon>
-      <ion-label>Cart</ion-label>
     </ion-tab-button>
     <ion-tab-button [disabled]="tabsOn" tab="search">
       <ion-icon name="search"></ion-icon>
       <ion-label>Search</ion-label>
     </ion-tab-button>
-    <ion-tab-button [disabled]="tabsOn" tab="order">
-      <ion-icon name="restaurant"></ion-icon>
-      <ion-label>Order</ion-label>
+    <ion-tab-button [disabled]="tabsOn" tab="cart">
+      <ion-icon name="cart"></ion-icon>
+      <ion-label>Cart</ion-label>
     </ion-tab-button>
     <ion-tab-button [disabled]="tabsOn" tab="settings">
       <ion-icon name="settings"></ion-icon>

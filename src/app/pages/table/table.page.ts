@@ -114,7 +114,6 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   }
 
   setTable() {
-  
     this.tableArray = [];
     this.total_occupied = 0;
     this.total_checkout = 0;
@@ -147,26 +146,23 @@ export class TablePage implements ViewWillEnter, OnDestroy {
         }
       }
     }
-
-    
   }
 
-  async selectTable(table) {
+  mobile_no = '';
+  members = '';
+
+  selectTable = async (table) => {
     if (table.cname == '') {
       const alert = await this.altCtrl.create({
         cssClass: 'alert-class',
         header: 'Confirm',
         inputs: [
           {
-            placeholder: 'Enter Customer Name',
+            placeholder: 'Enter Customer Mobile Number',
             type: 'text',
           },
           {
-            placeholder: 'Enter Customer Number',
-            type: 'text',
-          },
-          {
-            placeholder: 'Enter Number of Person',
+            placeholder: 'Enter Total Members',
             type: 'text',
           },
         ],
@@ -177,36 +173,30 @@ export class TablePage implements ViewWillEnter, OnDestroy {
             text: 'Cancel',
             role: 'cancel',
             cssClass: 'secondary',
-            handler: (blah) => {
-             
-            },
+            handler: (blah) => {},
           },
           {
             text: 'Continue',
             handler: (ele) => {
-              if (!ele[0]) {
+              if (!ele[0] || !ele[1]) {
                 return;
               }
-            
+              this.members = ele[1];
+              this.mobile_no = ele[0];
               this.showLoader();
               this.auth
-                .verifySession({
-                  name: ele[0],
-                  mobile_no: ele[1],
-                  members: ele[2],
-                  table: table.table_no.toString(),
+                .verifyMobileNo({
+                  mobile_no: ele[0],
+                  members: ele[1],
                 })
                 .subscribe(
                   (res: any) => {
                     this.hideLoader();
-              
                     if (res.success) {
-                      localStorage.setItem('selectedTable', table.table_no);
-                      this.router.navigate([`/tabs/menu`]);
+                      this.verifySession(table, res.data.cname || '');
                     }
                   },
                   async (err) => {
-               
                     this.hideLoader();
                     if (err.status == 401) {
                       console.log(err.error.message);
@@ -238,6 +228,113 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       this.orderService.setOrderItems([]);
       this.router.navigate(['/tabs/menu']);
       this.selectedTable = table;
+    }
+  };
+
+  async verifySession(table, cname) {
+    if (cname) {
+      const alert = await this.altCtrl.create({
+        cssClass: 'alert-class',
+        header: 'Confirm',
+        inputs: [
+          {
+            placeholder: 'Enter Customer Mobile Number *',
+            type: 'text',
+            value: this.mobile_no,
+          },
+          {
+            placeholder: 'Enter Customer Name *',
+            type: 'text',
+          },
+          {
+            placeholder: 'Enter Total Members *',
+            type: 'text',
+            value: this.members,
+          },
+        ],
+
+        message: 'Add customer to the table',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (blah) => {},
+          },
+          {
+            text: 'Continue',
+            handler: (ele) => {
+              if (!ele[0] || !ele[1] || !ele[2]) {
+                return;
+              }
+
+              this.showLoader();
+              this.auth
+                .verifySession({
+                  mobile_no: ele[0],
+                  cname: ele[1],
+                  members: ele[2],
+
+                  table: table.table_no.toString(),
+                })
+                .subscribe(
+                  (res: any) => {
+                    this.hideLoader();
+                    if (res.success) {
+                      localStorage.setItem('selectedTable', table.table_no);
+                      this.router.navigate([`/tabs/menu`]);
+                    }
+                  },
+                  async (err) => {
+                    this.hideLoader();
+                    if (err.status == 401) {
+                      console.log(err.error.message);
+                      this.router.navigate([`/not-found/${err.error.message}`]);
+                    }
+                    let toast = await this.toast.create({
+                      message: err.error.message,
+                      duration: 4000,
+                      position: 'top',
+                    });
+                    await toast.present();
+                  }
+                );
+            },
+          },
+        ],
+      });
+      await alert.present();
+    } else {
+      this.showLoader();
+      this.auth
+        .verifySession({
+          mobile_no: this.mobile_no,
+          cname: cname,
+          members: this.members,
+          table: table.table_no.toString(),
+        })
+        .subscribe(
+          (res: any) => {
+            this.hideLoader();
+            if (res.success) {
+              localStorage.setItem('selectedTable', table.table_no);
+              this.router.navigate([`/tabs/menu`]);
+            }
+          },
+          async (err) => {
+            this.hideLoader();
+            if (err.status == 401) {
+              console.log(err.error.message);
+              this.router.navigate([`/not-found/${err.error.message}`]);
+            }
+            let toast = await this.toast.create({
+              message: err.error.message,
+              duration: 4000,
+              position: 'top',
+            });
+            await toast.present();
+          }
+        );
     }
   }
 

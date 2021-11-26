@@ -24,7 +24,6 @@ export class AuthguardService implements OnInit, CanActivate {
   ) {}
 
   ngOnInit() {
-
   }
 
   async canActivate(

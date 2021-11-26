@@ -6,6 +6,7 @@
         interface="popover"
         [value]="currentRestType"
         (ionChange)="changeRestType($event)"
+        *ngIf="restType && restType.length >= 2"
       >
         <ion-select-option *ngFor="let type of restType" [value]="type.value"
           >{{type.name}}</ion-select-option
@@ -40,7 +41,7 @@
   <ion-row>
     <div class="tabe-wrapper">
       <ion-card
-      mode="md"
+        mode="md"
         *ngFor="let table of tableArray;let i = index"
         [id]="
         table.cid

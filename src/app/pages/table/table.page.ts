@@ -160,10 +160,12 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             placeholder: 'Enter Customer Mobile Number',
             type: 'text',
+            name : 'mobile_no'
           },
           {
             placeholder: 'Enter Total Members',
             type: 'text',
+            name : 'members'
           },
         ],
 
@@ -240,15 +242,18 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             placeholder: 'Enter Customer Mobile Number *',
             type: 'text',
+            name: 'mobile_no',
             value: this.mobile_no,
           },
           {
             placeholder: 'Enter Customer Name *',
             type: 'text',
+            name: 'cust name',
           },
           {
             placeholder: 'Enter Total Members *',
             type: 'text',
+            name: 'members',
             value: this.members,
           },
         ],
@@ -340,7 +345,6 @@ export class TablePage implements ViewWillEnter, OnDestroy {
 
   ngOnDestroy() {
     this.custSub.unsubscribe();
-    this.tableSub.unsubscribe();
   }
 
   hideLoader() {

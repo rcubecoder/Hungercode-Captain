@@ -126,7 +126,6 @@ export class OrderService {
   async decryptToken(token?): Promise<any> {
     if (!token) {
       token = localStorage.getItem('auth_token');
-      
     }
     return new Promise(async (resolve, reject) => {
       const helper = new JwtHelperService();

@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  API: { url: 'https://customer.admin.hunger.codes/api/captain/' },
+  API: { url: 'https://customer.hunger.codes/api/captain/' },
   firebaseConfig : {
     apiKey: "AIzaSyAiWG627GJZ2j6h0QQUd7JoSmZomGLQKIU",
     authDomain: "hungercodes.firebaseapp.com",

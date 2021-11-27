@@ -36,7 +36,7 @@ export class LoginComponent implements AfterViewInit {
       this.router.navigate([`/tabs/table`]);
     }
 
-    let height = window.innerHeight;
+  /*   let height = window.innerHeight;
     let footer = document.getElementById('footer');
     window.addEventListener('resize', () => {
       if (window.innerHeight < height) {
@@ -44,7 +44,7 @@ export class LoginComponent implements AfterViewInit {
       } else {
         footer.style.marginBottom = '0px';
       }
-    });
+    }); */
   }
 
   changeType() {

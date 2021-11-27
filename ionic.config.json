@@ -1,5 +1,7 @@
 {
   "name": "Hotel-Captain",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

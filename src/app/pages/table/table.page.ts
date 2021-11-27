@@ -50,6 +50,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   custSub: Subscription;
 
   async ionViewWillEnter() {
+    console.log('called ion view will enter')
     let token = localStorage.getItem('auth_token');
     if (!token) {
       this.router.navigate(['/login']);

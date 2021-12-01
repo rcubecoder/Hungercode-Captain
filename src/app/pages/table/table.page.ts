@@ -50,7 +50,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   custSub: Subscription;
 
   async ionViewWillEnter() {
-    console.log('called ion view will enter')
+    console.log('called ion view will enter');
     let token = localStorage.getItem('auth_token');
     if (!token) {
       this.router.navigate(['/login']);
@@ -110,6 +110,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       .indexOf(type);
     if (index != -1) {
       this.currentTables = Number(this.restType[index].tables);
+      console.log(this.currentTables);
     }
     this.setTable();
   }
@@ -127,8 +128,9 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       });
     }
 
+
     for (let ele of this.currentCustomers) {
-      if (ele.restore) {
+      if (ele.restore || ele.table == 'waiting') {
         continue;
       }
       this.tableArray[ele.table - 1].cname = ele.cname;
@@ -139,7 +141,10 @@ export class TablePage implements ViewWillEnter, OnDestroy {
     }
 
     for (let i = 0; i < this.customers.length; i++) {
-      if (this.customers[i].cname != '') {
+      if (
+        this.customers[i].cname != '' &&
+        this.customers[i].table != 'waiting'
+      ) {
         if (this.customers[i].checkout) {
           this.total_checkout++;
         } else {
@@ -161,12 +166,12 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             placeholder: 'Enter Customer Mobile Number',
             type: 'text',
-            name : 'mobile_no'
+            name: 'mobile_no',
           },
           {
             placeholder: 'Enter Total Members',
             type: 'text',
-            name : 'members'
+            name: 'members',
           },
         ],
 

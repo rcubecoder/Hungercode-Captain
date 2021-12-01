@@ -185,7 +185,6 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             text: 'Continue',
             handler: (ele) => {
-              console.log(ele);
               if (!ele.mobile_no || !ele.members) {
                 return;
               }
@@ -194,8 +193,8 @@ export class TablePage implements ViewWillEnter, OnDestroy {
               this.showLoader();
               this.auth
                 .verifyMobileNo({
-                  mobile_no: ele.members,
-                  members: ele.mobile_no,
+                  mobile_no: ele.mobile_no,
+                  members: ele.members,
                 })
                 .subscribe(
                   (res: any) => {
@@ -257,6 +256,11 @@ export class TablePage implements ViewWillEnter, OnDestroy {
             name: 'cust_name',
           },
           {
+            placeholder: 'Enter Birth Date *',
+            type: 'date',
+            name: 'bod',
+          },
+          {
             placeholder: 'Enter Total Members *',
             type: 'text',
             name: 'members',
@@ -285,7 +289,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
                   mobile_no: ele.mobile_no,
                   cname: ele.cust_name,
                   members: ele.members,
-
+                  dob: ele.bod || '',
                   table: table.table_no.toString(),
                 })
                 .subscribe(

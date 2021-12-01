@@ -128,7 +128,6 @@ export class TablePage implements ViewWillEnter, OnDestroy {
       });
     }
 
-
     for (let ele of this.currentCustomers) {
       if (ele.restore || ele.table == 'waiting') {
         continue;
@@ -186,22 +185,23 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             text: 'Continue',
             handler: (ele) => {
-              if (!ele[0] || !ele[1]) {
+              console.log(ele);
+              if (!ele.mobile_no || !ele.members) {
                 return;
               }
-              this.members = ele[1];
-              this.mobile_no = ele[0];
+              this.members = ele.members;
+              this.mobile_no = ele.mobile_no;
               this.showLoader();
               this.auth
                 .verifyMobileNo({
-                  mobile_no: ele[0],
-                  members: ele[1],
+                  mobile_no: ele.members,
+                  members: ele.mobile_no,
                 })
                 .subscribe(
                   (res: any) => {
                     this.hideLoader();
                     if (res.success) {
-                      this.verifySession(table, res.data.cname || '');
+                      this.verifySession(table, res.data || '');
                     }
                   },
                   async (err) => {
@@ -240,7 +240,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
   };
 
   async verifySession(table, cname) {
-    if (cname) {
+    if (!cname) {
       const alert = await this.altCtrl.create({
         cssClass: 'alert-class',
         header: 'Confirm',
@@ -254,7 +254,7 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             placeholder: 'Enter Customer Name *',
             type: 'text',
-            name: 'cust name',
+            name: 'cust_name',
           },
           {
             placeholder: 'Enter Total Members *',
@@ -275,16 +275,16 @@ export class TablePage implements ViewWillEnter, OnDestroy {
           {
             text: 'Continue',
             handler: (ele) => {
-              if (!ele[0] || !ele[1] || !ele[2]) {
+              if (!ele.mobile_no || !ele.members || !ele.cust_name) {
                 return;
               }
 
               this.showLoader();
               this.auth
                 .verifySession({
-                  mobile_no: ele[0],
-                  cname: ele[1],
-                  members: ele[2],
+                  mobile_no: ele.mobile_no,
+                  cname: ele.cust_name,
+                  members: ele.members,
 
                   table: table.table_no.toString(),
                 })

@@ -179,8 +179,9 @@ export class MenuPage implements ViewWillEnter, OnDestroy {
     if (menu.disPrice) {
       this.menuOptionMenu.price = menu.disPrice;
     }
+
     if (menu.addon?.length == 0 && menu.variant?.length == 0) {
-      if(this.menuCards[index].cusomize != 0){
+      if(this.menuCards[index].customize != 0){
         return
       }
       this.menuCards[index].customize++;
